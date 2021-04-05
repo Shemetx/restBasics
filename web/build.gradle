@@ -1,0 +1,10 @@
+plugins {
+    id 'war'
+}
+
+
+
+project.dependencies {
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compile project(':service')
+}

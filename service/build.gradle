@@ -1,0 +1,6 @@
+project.dependencies {
+    compile project(':persistence')
+}
+test {
+    useJUnitPlatform()
+}
