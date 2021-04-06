@@ -37,6 +37,9 @@ public class GiftCertificateDao {
     private static final String FIND_BY_NAME  = SELECT_GIFT_CERTIFICATE + " WHERE name = ? ";
     private static final String FIND_BY_PART_NAME = SELECT_GIFT_CERTIFICATE + " WHERE locate(?,name)";
     private static final String FIND_BY_PART_DESCRIPTION = SELECT_GIFT_CERTIFICATE + " WHERE locate(?,description)";
+    private static final String FIND_BY_TAG_ID = SELECT_GIFT_CERTIFICATE + " JOIN certificates_tags ct on gift_certificate.id = ct.cert_id\n" +
+            "WHERE tag_id = ?; ";
+
 
     public List<GiftCertificate> index() {
         return
@@ -48,6 +51,9 @@ public class GiftCertificateDao {
     }
     public GiftCertificate findByName(String name ) {
         return jdbcTemplate.queryForObject(FIND_BY_NAME,mapper,name);
+    }
+    public List<GiftCertificate> findByTagId(int id) {
+        return jdbcTemplate.query(FIND_BY_TAG_ID,mapper,id);
     }
 
     public List<GiftCertificate> findByPartOfName(String name) {

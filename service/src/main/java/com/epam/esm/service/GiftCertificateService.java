@@ -67,17 +67,11 @@ public class GiftCertificateService {
 
     public List<GiftCertificate> findAllByTag(String tag) {
         Tag tagByName = tagService.findByName(tag);
-        List<CertificatesTags> allByTagId = certificateTagsService.findAllByTagId(tagByName.getId());
-        List<GiftCertificate> certificateList = new ArrayList<>();
-
-        for (CertificatesTags tags : allByTagId) {
-            GiftCertificate certificate = giftCertificateDao.findById(tags.getCertificateId());
-
-            if (certificate!= null) {
-                certificateList.add(certificate);
-            }
+        List<GiftCertificate> byTagId = giftCertificateDao.findByTagId(tagByName.getId());
+        if(byTagId.isEmpty()) {
+            throw new EntityNotFoundException("Gift certificates with tag name: " + tag + " not found");
         }
-        return certificateList;
+        return byTagId;
     }
 
     public GiftCertificate findById(int id) {
@@ -112,14 +106,9 @@ public class GiftCertificateService {
         return all;
     }
 
-    public Set<Tag> findCertificateTags(GiftCertificate giftCertificate) {
-        List<CertificatesTags> certificatesTags = certificateTagsService.findAllByCertificateId(giftCertificate.getId());
-        Set<Tag> tagSet = new HashSet<>();
-        for (CertificatesTags tags : certificatesTags) {
-            Tag query = tagService.findById(tags.getTagId());
-            tagSet.add(query);
-        }
-        return tagSet;
+    public Set<Tag> findCertificateTags(int id) {
+        List<Tag> certificateTags = tagService.findCertificateTags(id);
+        return new HashSet<>(certificateTags);
     }
 
     public GiftCertificate findByName(String name) {

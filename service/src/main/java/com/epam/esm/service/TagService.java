@@ -35,6 +35,9 @@ public class TagService {
         return tagsDao.index();
     }
 
+    public List<Tag> findCertificateTags(int id) {
+        return  tagsDao.findCertificateTags(id);
+    }
     public Tag findById(int id) {
         Tag tag = tagsDao.findById(id);
         if(tag == null) {

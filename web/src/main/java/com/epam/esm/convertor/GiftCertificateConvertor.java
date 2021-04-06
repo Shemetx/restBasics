@@ -42,7 +42,7 @@ public class GiftCertificateConvertor {
     public GiftCertificateDto entityToDto(GiftCertificate giftCertificate) {
         ModelMapper mapper = new ModelMapper();
         GiftCertificateDto map = mapper.map(giftCertificate, GiftCertificateDto.class);
-        map.setTags(certificateService.findCertificateTags(giftCertificate));
+        map.setTags(certificateService.findCertificateTags(giftCertificate.getId()));
         return map;
     }
 

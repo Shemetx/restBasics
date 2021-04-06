@@ -18,10 +18,12 @@ public class TagsDao {
     public void setTagMapper(TagMapper tagMapper) {
         this.tagMapper = tagMapper;
     }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     private static final String INSERT_TAG = "INSERT INTO tag(name) " +
             "VALUES(?);";
     private static final String DELETE_TAG = "DELETE FROM tag ";
@@ -29,26 +31,36 @@ public class TagsDao {
     private static final String UPDATE_TAG = "UPDATE tag SET " +
             " name = ? ";
     private static final String FIND_BY_ID = SELECT_TAG + " WHERE id = ? ";
-    private static final String FIND_BY_NAME  = SELECT_TAG + " WHERE name = ? ";
+    private static final String FIND_BY_NAME = SELECT_TAG + " WHERE name = ? ";
+    private static final String FIND_CERTIFICATE_TAGS = SELECT_TAG + " JOIN certificates_tags ct on tag.id = ct.tag_id\n" +
+            "WHERE cert_id = ?; ";
 
     public List<Tag> index() {
-        return jdbcTemplate.query(SELECT_TAG,tagMapper);
+        return jdbcTemplate.query(SELECT_TAG, tagMapper);
     }
+
     public Tag findById(int id) {
-        return jdbcTemplate.queryForObject(FIND_BY_ID,tagMapper,id);
+        return jdbcTemplate.queryForObject(FIND_BY_ID, tagMapper, id);
     }
-    public Tag findByName(String name ) {
-        return jdbcTemplate.queryForObject(FIND_BY_NAME,tagMapper,name);
+
+    public Tag findByName(String name) {
+        return jdbcTemplate.queryForObject(FIND_BY_NAME, tagMapper, name);
     }
+
+    public List<Tag> findCertificateTags(int id) {
+        return jdbcTemplate.query(FIND_CERTIFICATE_TAGS, tagMapper, id);
+    }
+
     public void save(Tag tag) {
-        jdbcTemplate.update(INSERT_TAG,tag.getName());
+        jdbcTemplate.update(INSERT_TAG, tag.getName());
     }
+
     public void update(Tag tag) {
-        jdbcTemplate.update(UPDATE_TAG + " WHERE id = ?",tag.getName(),tag.getId());
+        jdbcTemplate.update(UPDATE_TAG + " WHERE id = ?", tag.getName(), tag.getId());
     }
 
     public void delete(int id) {
-        jdbcTemplate.update(DELETE_TAG + " WHERE id = ?",id);
+        jdbcTemplate.update(DELETE_TAG + " WHERE id = ?", id);
     }
 
 }

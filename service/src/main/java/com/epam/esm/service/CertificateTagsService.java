@@ -18,20 +18,6 @@ public class CertificateTagsService {
         this.dao = dao;
     }
 
-    public List<CertificatesTags> findAllByCertificateId(int id) {
-        return dao.findAllByCertificateId(id);
-    }
-
-    public List<CertificatesTags> findAllByTagId(int id) {
-        List<CertificatesTags> certificatesTags = dao.findAllByTagId(id);
-        if (certificatesTags.isEmpty()) {
-            throw new EntityNotFoundException("Certificates with tag id: '" + id + "' not found");
-        }
-
-        return certificatesTags;
-    }
-
-
     public void save(CertificatesTags certificatesTags) {
         dao.save(certificatesTags);
     }
