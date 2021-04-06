@@ -63,7 +63,7 @@ public class GiftCertificatesController {
 
     @DeleteMapping("/{id}")
     public List<GiftCertificateDto> delete(@PathVariable("id") int id) {
-        giftCertificateService.delete(GiftCertificate.Builder.newInstance().setId(id).build());
+        giftCertificateService.delete(id);
         List<GiftCertificate> dtoList = giftCertificateService.findAll();
         return convertor.entityToDto(dtoList);
     }

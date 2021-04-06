@@ -1,7 +1,5 @@
 package com.epam.esm.convertor;
 
-import com.epam.esm.dao.impl.CertificatesTagsDaoImpl;
-import com.epam.esm.dao.impl.TagsDaoImpl;
 import com.epam.esm.domain.CertificatesTags;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
@@ -9,16 +7,11 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.service.CertificateTagsService;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
-import com.epam.esm.specification.impl.FindAll;
-import com.epam.esm.specification.impl.FindById;
-import com.epam.esm.specification.impl.certificatesTags.FindByCertificateId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

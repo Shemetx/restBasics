@@ -1,17 +1,11 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
+import com.epam.esm.dao.impl.GiftCertificateDao;
 import com.epam.esm.domain.CertificatesTags;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.specification.impl.FindAll;
-import com.epam.esm.specification.impl.FindById;
-import com.epam.esm.specification.impl.certificatesTags.FindByTagId;
-import com.epam.esm.specification.impl.giftCertificate.FindByPartOfDescription;
-import com.epam.esm.specification.impl.giftCertificate.FindByPartOfName;
-import com.epam.esm.specification.impl.giftCertificate.UpdateGiftCertificateById;;
-import com.epam.esm.specification.impl.tags.FindByName;
+;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +16,10 @@ public class GiftCertificateService {
 
     private CertificateTagsService certificateTagsService;
     private TagService tagService;
-    private GiftCertificateDaoImpl giftCertificateDao;
+    private GiftCertificateDao giftCertificateDao;
 
     @Autowired
-    public void setTagsDao(TagService tagService) {
+    public void setTagService(TagService tagService) {
         this.tagService = tagService;
     }
 
@@ -35,20 +29,20 @@ public class GiftCertificateService {
     }
 
     @Autowired
-    public void setGiftCertificateDao(GiftCertificateDaoImpl giftCertificateDao) {
+    public void setGiftCertificateDao(GiftCertificateDao giftCertificateDao) {
         this.giftCertificateDao = giftCertificateDao;
     }
 
     public void save(GiftCertificate giftCertificate) {
-        giftCertificateDao.add(giftCertificate);
+        giftCertificateDao.save(giftCertificate);
     }
 
     public void update(GiftCertificate giftCertificate) {
-        int update = giftCertificateDao.update(new UpdateGiftCertificateById(giftCertificate));
+        giftCertificateDao.update(giftCertificate);
     }
 
     public List<GiftCertificate> findByPartOfName(String name) {
-        List<GiftCertificate> certificateList = giftCertificateDao.queryAll(new FindByPartOfName(name));
+        List<GiftCertificate> certificateList = giftCertificateDao.findByPartOfName(name);
         if (certificateList.isEmpty()) {
             throw new EntityNotFoundException("Certificates with name: " + name + " not found");
         }
@@ -56,39 +50,42 @@ public class GiftCertificateService {
     }
 
     public List<GiftCertificate> findByPartOfDescription(String description) {
-        List<GiftCertificate> certificateList = giftCertificateDao.queryAll(new FindByPartOfDescription(description));
+        List<GiftCertificate> certificateList = giftCertificateDao.findByPartOfDescription(description);
         if (certificateList.isEmpty()) {
             throw new EntityNotFoundException("Certificates with description: " + description + " not found");
         }
         return certificateList;
     }
 
-    public void delete(GiftCertificate giftCertificate) {
-        giftCertificateDao.delete(giftCertificate, new FindById(giftCertificate.getId()));
+    public void delete(int id) {
+        giftCertificateDao.delete(id);
     }
 
     public List<GiftCertificate> findAll() {
-        return new ArrayList<>(giftCertificateDao.queryAll(new FindAll()));
+        return giftCertificateDao.index();
     }
 
     public List<GiftCertificate> findAllByTag(String tag) {
         Tag tagByName = tagService.findByName(tag);
-        List<CertificatesTags> allByTagId = certificateTagsService.findAllByTagId(tagByName);
+        List<CertificatesTags> allByTagId = certificateTagsService.findAllByTagId(tagByName.getId());
         List<GiftCertificate> certificateList = new ArrayList<>();
 
         for (CertificatesTags tags : allByTagId) {
-            Optional<GiftCertificate> query = giftCertificateDao.query(new FindById(tags.getCertificateId()));
-            query.ifPresent(certificateList::add);
+            GiftCertificate certificate = giftCertificateDao.findById(tags.getCertificateId());
+
+            if (certificate!= null) {
+                certificateList.add(certificate);
+            }
         }
         return certificateList;
     }
 
     public GiftCertificate findById(int id) {
-        Optional<GiftCertificate> certificate = giftCertificateDao.query(new FindById(id));
-        if (!certificate.isPresent()) {
+        GiftCertificate certificate = giftCertificateDao.findById(id);
+        if (certificate == null) {
             throw new EntityNotFoundException("Gift certificate with id: " + id + " not found");
         }
-        return certificate.get();
+        return certificate;
     }
 
     public List<GiftCertificate> getAscendingDate() {
@@ -126,10 +123,10 @@ public class GiftCertificateService {
     }
 
     public GiftCertificate findByName(String name) {
-        Optional<GiftCertificate> query = giftCertificateDao.query(new FindByName(name));
-        if (!query.isPresent()) {
+        GiftCertificate certificate = giftCertificateDao.findByName(name);
+        if (certificate == null) {
             throw new EntityNotFoundException("Certificate with name: '" + name + "' not found");
         }
-        return query.get();
+        return certificate;
     }
 }

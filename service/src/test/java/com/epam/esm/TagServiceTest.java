@@ -1,17 +1,14 @@
 package com.epam.esm;
 
-import com.epam.esm.dao.impl.TagsDaoImpl;
+import com.epam.esm.dao.impl.TagsDao;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.service.TagService;
-import com.epam.esm.specification.SqlSpecification;
 
-import com.epam.esm.specification.impl.FindById;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -25,10 +22,8 @@ public class TagServiceTest {
     TagService tagService;
 
     @Mock
-    TagsDaoImpl tagsDao;
+    TagsDao tagsDao;
 
-    @Mock
-    SqlSpecification sqlSpecification;
 
     @BeforeEach
     public void setup() {
@@ -43,7 +38,7 @@ public class TagServiceTest {
 
     @Test
     public void findByIdPositiveTest() {
-        when(tagsDao.query(sqlSpecification)).thenReturn(Optional.of(tagTest));
+        when(tagsDao.findById(tagTest.getId())).thenReturn(tagTest);
         Tag tag = tagService.findById(tagTest.getId());
         assertEquals(tag,tagTest);
 

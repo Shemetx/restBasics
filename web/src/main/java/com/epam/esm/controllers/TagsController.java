@@ -46,7 +46,7 @@ public class TagsController {
 
     @DeleteMapping("/{id}")
     public List<Tag> delete(@PathVariable("id") int id) {
-         tagService.delete(Tag.Builder.newInstance().setId(id).build());
+         tagService.delete(id);
         return tagService.findAll();
     }
 
