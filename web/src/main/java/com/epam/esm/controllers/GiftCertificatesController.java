@@ -49,6 +49,7 @@ public class GiftCertificatesController {
         giftCertificateService.save(giftCertificate);
         GiftCertificate byName = giftCertificateService.findByName(dto.getName());
         dto.setId(byName.getId());
+        dto.setCreateDate(byName.getCreateDate());
         convertor.parseTags(dto);
         return dto;
     }

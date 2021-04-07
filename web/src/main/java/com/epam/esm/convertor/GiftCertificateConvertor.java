@@ -35,9 +35,9 @@ public class GiftCertificateConvertor {
     }
 
     @Autowired
-   public void setCertificateTagsService(CertificateTagsService certificateTagsService) {
+    public void setCertificateTagsService(CertificateTagsService certificateTagsService) {
         this.certificateTagsService = certificateTagsService;
-   }
+    }
 
     public GiftCertificateDto entityToDto(GiftCertificate giftCertificate) {
         ModelMapper mapper = new ModelMapper();
@@ -62,20 +62,16 @@ public class GiftCertificateConvertor {
         Set<Tag> tagSet = dto.getTags();
         List<Tag> currentTags = tagService.findAll();
         for (Tag tag : tagSet) {
-            Optional<Tag> byId = currentTags.stream().filter(x -> tag.getId() == x.getId()).findFirst();
-            if (byId.isPresent()) {
-                if (!tag.getName().equals(byId.get().getName())) {
-                    tagService.update(tag);
-                }
-            } else {
-                Optional<Tag> byName = currentTags.stream().filter(x -> tag.getName().equals(x.getName())).findFirst();
-                if (!byName.isPresent()) {
-                    tagService.save(tag);
-                }
-                CertificatesTags certificatesTags = CertificatesTags.Builder.newInstance()
-                .setCertificateId(dto.getId())
-                .setTagId(tagService.findByName(tag.getName()).getId())
-                .build();
+            Optional<Tag> byName = currentTags.stream().filter(x -> tag.getName().equals(x.getName())).findFirst();
+            if (!byName.isPresent()) {
+                tagService.save(tag);
+            }
+            CertificatesTags certificatesTags = CertificatesTags.Builder.newInstance()
+                    .setCertificateId(dto.getId())
+                    .setTagId(tagService.findByName(tag.getName()).getId())
+                    .build();
+            CertificatesTags byIds = certificateTagsService.findByIds(certificatesTags.getCertificateId(), certificatesTags.getTagId());
+            if (byIds == null) {
                 certificateTagsService.save(certificatesTags);
             }
         }

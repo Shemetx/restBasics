@@ -6,7 +6,6 @@ import com.epam.esm.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 public class CertificateTagsService {
@@ -22,4 +21,7 @@ public class CertificateTagsService {
         dao.save(certificatesTags);
     }
 
+    public CertificatesTags findByIds(int certId,int tagId) {
+        return dao.findByBothId(certId, tagId);
+    }
 }

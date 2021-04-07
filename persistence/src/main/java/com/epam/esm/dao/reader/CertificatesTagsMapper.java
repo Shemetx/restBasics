@@ -16,9 +16,9 @@ public class CertificatesTagsMapper implements RowMapper<CertificatesTags> {
 
     @Override
     public CertificatesTags mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return CertificatesTags.Builder.newInstance()
-                .setCertificateId(rs.getInt("cert_id"))
-                .setTagId(rs.getInt("tag_id"))
-                .build();
+            return CertificatesTags.Builder.newInstance()
+                    .setCertificateId(rs.getInt("cert_id"))
+                    .setTagId(rs.getInt("tag_id"))
+                    .build();
     }
 }
