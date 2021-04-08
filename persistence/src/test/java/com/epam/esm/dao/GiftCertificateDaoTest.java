@@ -1,37 +1,29 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.dao.impl.GiftCertificateDao;
-import com.epam.esm.dao.reader.GiftCertificateMapper;
+import com.epam.esm.config.PersistenceDevConfig;
 import com.epam.esm.domain.GiftCertificate;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("dev")
+@ContextConfiguration(classes = PersistenceDevConfig.class)
 public class GiftCertificateDaoTest {
-    private static GiftCertificateDao dao;
 
-    public static DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:h2/init_schema.sql")
-                .addScript("classpath:h2/test_data.sql")
-                .build();
-    }
-    
-    @BeforeAll
-    public static void init() {
-        dao = new GiftCertificateDao();
-        dao.setJdbcTemplate(new JdbcTemplate(dataSource()));
-        dao.setMapper(new GiftCertificateMapper());
+    private  GiftCertificateDao dao;
+
+    @Autowired
+    public void setDao(GiftCertificateDao dao) {
+        this.dao = dao;
     }
 
     @Test
@@ -91,21 +83,14 @@ public class GiftCertificateDaoTest {
 
     @Test
     public void updateTest() {
+        GiftCertificate beforeUpdate = dao.findById(1);
         GiftCertificate certificate = GiftCertificate.Builder.newInstance()
-                .setName("saveTestName")
-                .setDescription("saveTestDescription")
-                .setPrice(23.6f)
-                .setDuration(10)
-                .setCreateDate(LocalDateTime.parse("2020-07-07T15:15:15"))
-                .setLastUpdateDate(LocalDateTime.parse("2020-07-07T15:15:15"))
+                .setId(1)
+                .setPrice(16.78f)
                 .build();
-        dao.save(certificate);
-        GiftCertificate beforeUpdate = dao.findByName(certificate.getName());
-        beforeUpdate.setName("afterUpdate");
-        dao.update(beforeUpdate);
-        GiftCertificate afterUpdate = dao.findById(beforeUpdate.getId());
-        dao.delete(afterUpdate.getId());
-        assertNotEquals(certificate.getName(),afterUpdate.getName());
+        dao.update(certificate);
+        GiftCertificate afterUpdate = dao.findById(1);
+        assertNotEquals(beforeUpdate.getPrice(),afterUpdate.getPrice());
     }
 
     @Test

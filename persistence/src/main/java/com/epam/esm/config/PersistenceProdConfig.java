@@ -1,36 +1,47 @@
 package com.epam.esm.config;
 
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
 import java.util.Objects;
 
+
+/**
+ * App configuration for persistence module in prod profile
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:application.properties")
-@ComponentScan
-public class PersistenceConfig implements WebMvcConfigurer {
-
+@Profile("prod")
+public class PersistenceProdConfig implements WebMvcConfigurer {
 
     private Environment environment;
 
+    /**
+     * Sets environment which reads application.properties
+     *
+     * @param environment the environment
+     */
     @Autowired
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
+
+
+    /**
+     * DataSource for my local database with Hicari coonnection pool
+     *
+     * @return the data source
+     */
     @Bean
     public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
@@ -40,12 +51,28 @@ public class PersistenceConfig implements WebMvcConfigurer {
         hikariConfig.setPassword(environment.getProperty("jdbc.password"));
         hikariConfig.setMaximumPoolSize(Integer.parseInt(
                 Objects.requireNonNull(environment.getProperty("jdbc.availableConnections"))));
-
         return new HikariDataSource(hikariConfig);
     }
 
+    /**
+     * Jdbc template for local database
+     *
+     * @return the jdbc template
+     */
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
+    }
+
+    /**
+     * Transaction manager platform to work with transactions.
+     *
+     * @return the platform transaction manager
+     */
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        transactionManager.setDataSource(dataSource());
+        return transactionManager;
     }
 }

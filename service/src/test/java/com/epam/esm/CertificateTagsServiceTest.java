@@ -1,8 +1,7 @@
 package com.epam.esm;
 
-import com.epam.esm.dao.impl.CertificatesTagsDao;
+import com.epam.esm.dao.CertificatesTagsDao;
 import com.epam.esm.domain.CertificatesTags;
-import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.CertificateTagsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
 
 public class CertificateTagsServiceTest {
 

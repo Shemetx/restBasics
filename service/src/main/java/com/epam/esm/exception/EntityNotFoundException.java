@@ -1,8 +1,8 @@
 package com.epam.esm.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
+/**
+ * Exception for 404 error
+ */
 public class EntityNotFoundException extends RuntimeException {
 
     private String message;
@@ -12,6 +12,11 @@ public class EntityNotFoundException extends RuntimeException {
         return message;
     }
 
+    /**
+     * Constructor
+     *
+     * @param message the message
+     */
     public EntityNotFoundException(String message) {
 
         this.message = message;

@@ -1,7 +1,6 @@
 package com.epam.esm;
 
-import com.epam.esm.dao.impl.GiftCertificateDao;
-import com.epam.esm.domain.CertificatesTags;
+import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
@@ -18,6 +17,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
 
 public class GiftCertificateServiceTest {
 
@@ -238,5 +238,7 @@ public class GiftCertificateServiceTest {
         Set<Tag> certificateTags = service.findCertificateTags(testEntity.getId());
         assertEquals(expected,certificateTags);
     }
+
+
 
 }

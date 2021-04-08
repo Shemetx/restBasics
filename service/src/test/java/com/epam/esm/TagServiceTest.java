@@ -1,6 +1,6 @@
 package com.epam.esm;
 
-import com.epam.esm.dao.impl.TagsDao;
+import com.epam.esm.dao.TagsDao;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;

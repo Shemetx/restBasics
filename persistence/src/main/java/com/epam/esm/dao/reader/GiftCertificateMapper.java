@@ -6,12 +6,11 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
+
+/**
+ * Gets entity as ResultSet form db and read it to GiftCertificate entity
+ */
 @Component
 public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 

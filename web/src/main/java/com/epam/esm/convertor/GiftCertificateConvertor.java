@@ -1,44 +1,40 @@
 package com.epam.esm.convertor;
 
-import com.epam.esm.domain.CertificatesTags;
 import com.epam.esm.domain.GiftCertificate;
-import com.epam.esm.domain.Tag;
 import com.epam.esm.dto.GiftCertificateDto;
-import com.epam.esm.service.CertificateTagsService;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.TagService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Converts from DTO to entity GiftCertificate and visa versa
+ */
 @Component
 public class GiftCertificateConvertor {
 
-    private CertificateTagsService certificateTagsService;
-    private TagService tagService;
+
     private GiftCertificateService certificateService;
 
+    /**
+     * Sets certificate service.
+     *
+     * @param giftCertificateService the gift certificate service
+     */
     @Autowired
     public void setCertificateService(GiftCertificateService giftCertificateService) {
         this.certificateService = giftCertificateService;
     }
 
-    @Autowired
-    public void setTagsDao(TagService tagService) {
-        this.tagService = tagService;
-    }
-
-    @Autowired
-    public void setCertificateTagsService(CertificateTagsService certificateTagsService) {
-        this.certificateTagsService = certificateTagsService;
-    }
-
+    /**
+     * Entity to dto gift certificate.
+     *
+     * @param giftCertificate the gift certificate
+     * @return the gift certificate dto
+     */
     public GiftCertificateDto entityToDto(GiftCertificate giftCertificate) {
         ModelMapper mapper = new ModelMapper();
         GiftCertificateDto map = mapper.map(giftCertificate, GiftCertificateDto.class);
@@ -46,38 +42,25 @@ public class GiftCertificateConvertor {
         return map;
     }
 
+    /**
+     * List of entities to list dto
+     *
+     * @param giftCertificates the gift certificates
+     * @return the list
+     */
     public List<GiftCertificateDto> entityToDto(List<GiftCertificate> giftCertificates) {
         return giftCertificates.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
+    /**
+     * Dto to entity GiftCertificate.
+     *
+     * @param dto the dto
+     * @return the gift certificate
+     */
     public GiftCertificate dtoToEntity(GiftCertificateDto dto) {
         ModelMapper mapper = new ModelMapper();
-        GiftCertificate certificate = mapper.map(dto, GiftCertificate.class);
-        certificate.setCreateDate(LocalDateTime.now());
-        certificate.setLastUpdateDate(LocalDateTime.now());
-        return certificate;
+        return mapper.map(dto, GiftCertificate.class);
     }
 
-    public void parseTags(GiftCertificateDto dto) {
-        Set<Tag> tagSet = dto.getTags();
-        List<Tag> currentTags = tagService.findAll();
-        for (Tag tag : tagSet) {
-            Optional<Tag> byName = currentTags.stream().filter(x -> tag.getName().equals(x.getName())).findFirst();
-            if (!byName.isPresent()) {
-                tagService.save(tag);
-            }
-            CertificatesTags certificatesTags = CertificatesTags.Builder.newInstance()
-                    .setCertificateId(dto.getId())
-                    .setTagId(tagService.findByName(tag.getName()).getId())
-                    .build();
-            CertificatesTags byIds = certificateTagsService.findByIds(certificatesTags.getCertificateId(), certificatesTags.getTagId());
-            if (byIds == null) {
-                certificateTagsService.save(certificatesTags);
-            }
-        }
-    }
-
-    public List<GiftCertificate> dtoToEntity(List<GiftCertificateDto> dtoList) {
-        return dtoList.stream().map(this::dtoToEntity).collect(Collectors.toList());
-    }
 }
