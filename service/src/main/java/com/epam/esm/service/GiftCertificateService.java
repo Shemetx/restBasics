@@ -4,8 +4,10 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.domain.CertificatesTags;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
+import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -71,7 +73,11 @@ public class GiftCertificateService {
      * @param giftCertificate the gift certificate
      */
     public void save(GiftCertificate giftCertificate) {
+        try {
         giftCertificateDao.save(giftCertificate);
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityAlreadyExistsException("Tag with name: '" +giftCertificate.getName() +"' already exists" );
+        }
     }
 
     /**

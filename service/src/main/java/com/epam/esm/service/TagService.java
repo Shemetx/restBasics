@@ -2,8 +2,10 @@ package com.epam.esm.service;
 
 import com.epam.esm.dao.TagsDao;
 import com.epam.esm.domain.Tag;
+import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,7 +35,11 @@ public class TagService {
      * @param tag the tag
      */
     public void save(Tag tag) {
+        try {
         tagsDao.save(tag);
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityAlreadyExistsException("Tag with name: '" +tag.getName() +"' already exists" );
+        }
     }
 
     /**

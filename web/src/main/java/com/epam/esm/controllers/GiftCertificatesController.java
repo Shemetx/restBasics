@@ -4,13 +4,14 @@ import com.epam.esm.convertor.GiftCertificateConvertor;
 import com.epam.esm.domain.Error;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 /**
@@ -202,6 +203,18 @@ public class GiftCertificatesController {
     public List<GiftCertificateDto> showByTag(@PathVariable("tag") String tag) {
         List<GiftCertificate> certificateList = giftCertificateService.findAllByTag(tag);
         return convertor.entityToDto(certificateList);
+    }
+    /**
+     * Exception handler to catch while certificate already exists
+     *
+     * @param ex the ex
+     * @return the error
+     */
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Error certificateNotFound(EntityAlreadyExistsException ex) {
+        String message = ex.getMessage();
+        return new Error(409, message);
     }
 
 

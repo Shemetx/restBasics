@@ -4,6 +4,7 @@ package com.epam.esm.dao;
 import com.epam.esm.dao.reader.GiftCertificateMapper;
 import com.epam.esm.domain.GiftCertificate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -72,7 +73,11 @@ public class GiftCertificateDao {
      * @return the gift certificate
      */
     public GiftCertificate findById(int id) {
-        return jdbcTemplate.queryForObject(FIND_BY_ID, mapper, id);
+        try {
+            return jdbcTemplate.queryForObject(FIND_BY_ID, mapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -82,7 +87,12 @@ public class GiftCertificateDao {
      * @return the gift certificate
      */
     public GiftCertificate findByName(String name) {
-        return jdbcTemplate.queryForObject(FIND_BY_NAME, mapper, name);
+
+        try {
+            return jdbcTemplate.queryForObject(FIND_BY_NAME, mapper, name);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**

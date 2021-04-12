@@ -3,6 +3,7 @@ package com.epam.esm.dao;
 import com.epam.esm.dao.reader.TagMapper;
 import com.epam.esm.domain.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +64,11 @@ public class TagsDao {
      * @return the tag
      */
     public Tag findById(int id) {
-        return jdbcTemplate.queryForObject(FIND_BY_ID, tagMapper, id);
+        try {
+            return jdbcTemplate.queryForObject(FIND_BY_ID, tagMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -73,7 +78,11 @@ public class TagsDao {
      * @return the tag
      */
     public Tag findByName(String name) {
+        try {
         return jdbcTemplate.queryForObject(FIND_BY_NAME, tagMapper, name);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -92,7 +101,7 @@ public class TagsDao {
      * @param tag the tag
      */
     public void save(Tag tag) {
-        jdbcTemplate.update(INSERT_TAG, tag.getName());
+            jdbcTemplate.update(INSERT_TAG, tag.getName());
     }
 
     /**

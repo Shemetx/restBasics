@@ -2,6 +2,7 @@ package com.epam.esm.controllers;
 
 import com.epam.esm.domain.Error;
 import com.epam.esm.domain.Tag;
+import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +90,17 @@ public class TagsController {
         String message = ex.getMessage();
         return new Error(404, message);
 
+    }
+    /**
+     * Exception handler to catch while tag already exists
+     *
+     * @param ex the ex
+     * @return the error
+     */
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Error certificateNotFound(EntityAlreadyExistsException ex) {
+        String message = ex.getMessage();
+        return new Error(409, message);
     }
 }
