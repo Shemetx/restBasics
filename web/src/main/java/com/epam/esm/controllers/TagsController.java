@@ -5,6 +5,7 @@ import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.impl.TagServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +20,16 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagsController {
 
-    private TagService tagService;
+    private TagService tagServiceImpl;
 
     /**
      * Sets tag service.
      *
-     * @param tagService the tag service
+     * @param tagServiceImpl the tag service
      */
     @Autowired
-    public void setTagService(TagService tagService) {
-        this.tagService = tagService;
+    public void setTagService(TagServiceImpl tagServiceImpl) {
+        this.tagServiceImpl = tagServiceImpl;
     }
 
     /**
@@ -38,7 +39,7 @@ public class TagsController {
      */
     @GetMapping()
     public List<Tag> index() {
-        return tagService.findAll();
+        return tagServiceImpl.findAll();
     }
 
     /**
@@ -49,7 +50,7 @@ public class TagsController {
      */
     @GetMapping(value = "/{id}")
     public Tag show(@PathVariable("id") int id) {
-        return tagService.findById(id);
+        return tagServiceImpl.findById(id);
     }
 
 
@@ -61,8 +62,8 @@ public class TagsController {
      */
     @PostMapping()
     public List<Tag> create(@RequestBody Tag tag) {
-        tagService.save(tag);
-        return tagService.findAll();
+        tagServiceImpl.save(tag);
+        return tagServiceImpl.findAll();
     }
 
 
@@ -74,8 +75,8 @@ public class TagsController {
      */
     @DeleteMapping("/{id}")
     public List<Tag> delete(@PathVariable("id") int id) {
-        tagService.delete(id);
-        return tagService.findAll();
+        tagServiceImpl.delete(id);
+        return tagServiceImpl.findAll();
     }
 
     /**

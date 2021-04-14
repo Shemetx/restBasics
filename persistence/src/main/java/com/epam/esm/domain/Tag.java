@@ -4,7 +4,7 @@ package com.epam.esm.domain;
 /**
  * The type Tag.
  */
-public class Tag implements BaseEntity {
+public class Tag  {
 
     private int id;
     private String name;

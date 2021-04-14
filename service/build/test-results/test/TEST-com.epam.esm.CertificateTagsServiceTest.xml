@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.esm.CertificateTagsServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-08T15:13:55" hostname="DESKTOP-TPCNR8Q" time="0.831">
-  <properties/>
-  <testcase name="findByBothIdPositive()" classname="com.epam.esm.CertificateTagsServiceTest" time="0.831"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

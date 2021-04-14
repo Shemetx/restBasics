@@ -3,6 +3,7 @@ package com.epam.esm.convertor;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.impl.GiftCertificateServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +23,11 @@ public class GiftCertificateConvertor {
     /**
      * Sets certificate service.
      *
-     * @param giftCertificateService the gift certificate service
+     * @param giftCertificateServiceImpl the gift certificate service
      */
     @Autowired
-    public void setCertificateService(GiftCertificateService giftCertificateService) {
-        this.certificateService = giftCertificateService;
+    public void setCertificateService(GiftCertificateServiceImpl giftCertificateServiceImpl) {
+        this.certificateService = giftCertificateServiceImpl;
     }
 
     /**

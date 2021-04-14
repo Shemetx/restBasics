@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * The type Gift certificate.
  */
-public class GiftCertificate implements BaseEntity {
+public class GiftCertificate {
     private int id;
     private String name;
     private String description;

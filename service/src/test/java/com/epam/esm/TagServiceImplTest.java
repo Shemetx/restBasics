@@ -1,6 +1,7 @@
 package com.epam.esm;
 
 import com.epam.esm.dao.TagsDao;
+import com.epam.esm.dao.impl.TagsDaoImpl;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
@@ -15,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 
-public class TagServiceTest {
+public class TagServiceImplTest {
 
     @InjectMocks
-   private TagService tagService;
+   private TagService tagServiceImpl;
 
     @Mock
-   private TagsDao tagsDao;
+   private TagsDao tagsDaoImpl;
 
 
     @BeforeEach
@@ -37,30 +38,30 @@ public class TagServiceTest {
 
     @Test
     public void findByIdPositive() {
-        when(tagsDao.findById(tagTest.getId())).thenReturn(tagTest);
-        Tag tag = tagService.findById(tagTest.getId());
+        when(tagsDaoImpl.findById(tagTest.getId())).thenReturn(tagTest);
+        Tag tag = tagServiceImpl.findById(tagTest.getId());
         assertEquals(tag,tagTest);
 
     }
     @Test
     public void findByIdNegative() {
-        when(tagsDao.findById(tagTest.getId())).thenReturn(null);
+        when(tagsDaoImpl.findById(tagTest.getId())).thenReturn(null);
         assertThrows(EntityNotFoundException.class,() -> {
-            tagService.findById(tagTest.getId());
+            tagServiceImpl.findById(tagTest.getId());
         });
     }
 
     @Test
     public void findByNamePositive() {
-        when(tagsDao.findByName(tagTest.getName())).thenReturn(tagTest);
-        Tag tag = tagService.findByName(tagTest.getName());
+        when(tagsDaoImpl.findByName(tagTest.getName())).thenReturn(tagTest);
+        Tag tag = tagServiceImpl.findByName(tagTest.getName());
         assertEquals(tag,tagTest);
     }
     @Test
     public void findByNameNegative() {
-        when(tagsDao.findByName(tagTest.getName())).thenReturn(null);
+        when(tagsDaoImpl.findByName(tagTest.getName())).thenReturn(null);
         assertThrows(EntityNotFoundException.class,() -> {
-            tagService.findByName(tagTest.getName());
+            tagServiceImpl.findByName(tagTest.getName());
         });
     }
 

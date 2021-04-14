@@ -1,6 +1,7 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.config.PersistenceDevConfig;
+import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.domain.GiftCertificate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("dev")
 @ContextConfiguration(classes = PersistenceDevConfig.class)
-public class GiftCertificateDaoTest {
+public class GiftCertificateDaoImplTest {
 
-    private  GiftCertificateDao dao;
+    private GiftCertificateDao dao;
 
     @Autowired
-    public void setDao(GiftCertificateDao dao) {
+    public void setDao(GiftCertificateDaoImpl dao) {
         this.dao = dao;
     }
 

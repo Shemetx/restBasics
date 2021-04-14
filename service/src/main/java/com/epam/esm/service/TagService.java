@@ -1,64 +1,33 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dao.TagsDao;
 import com.epam.esm.domain.Tag;
-import com.epam.esm.exception.EntityAlreadyExistsException;
-import com.epam.esm.exception.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
 /**
- * Tag service to connect controller with dao layer
+ * The interface Tag service.
  */
-@Component
-public class TagService {
-
-    private TagsDao tagsDao;
-
-    /**
-     * Sets tags dao.
-     *
-     * @param tagsDao the tags dao
-     */
-    @Autowired
-    public void setTagsDao(TagsDao tagsDao) {
-        this.tagsDao = tagsDao;
-    }
-
+public interface TagService {
     /**
      * Saves tag
      *
      * @param tag the tag
      */
-    public void save(Tag tag) {
-        try {
-        tagsDao.save(tag);
-        } catch (DataIntegrityViolationException e) {
-            throw new EntityAlreadyExistsException("Tag with name: '" +tag.getName() +"' already exists" );
-        }
-    }
+    void save(Tag tag);
 
     /**
-     * Deletes tag
+     * Delete tag
      *
      * @param id the id
      */
-    public void delete(int id) {
-        tagsDao.delete(id);
-    }
+    void delete(int id);
 
     /**
-     * Find all tags
+     * Find all tags list.
      *
      * @return the list
      */
-    public List<Tag> findAll() {
-        return tagsDao.index();
-    }
+    List<Tag> findAll();
 
     /**
      * Find all certificate tags
@@ -66,9 +35,7 @@ public class TagService {
      * @param id the id
      * @return the list
      */
-    public List<Tag> findCertificateTags(int id) {
-        return tagsDao.findCertificateTags(id);
-    }
+    List<Tag> findCertificateTags(int id);
 
     /**
      * Find tag by id
@@ -76,13 +43,7 @@ public class TagService {
      * @param id the id
      * @return the tag
      */
-    public Tag findById(int id) {
-        Tag tag = tagsDao.findById(id);
-        if (tag == null) {
-            throw new EntityNotFoundException("Tag with id: '" + id + "' not found");
-        }
-        return tag;
-    }
+    Tag findById(int id);
 
     /**
      * Find tag by name
@@ -90,11 +51,6 @@ public class TagService {
      * @param name the name
      * @return the tag
      */
-    public Tag findByName(String name) {
-        Tag tag = tagsDao.findByName(name);
-        if (tag == null) {
-            throw new EntityNotFoundException("Tag: '" + name + "' not found");
-        }
-        return tag;
-    }
+    Tag findByName(String name);
+
 }

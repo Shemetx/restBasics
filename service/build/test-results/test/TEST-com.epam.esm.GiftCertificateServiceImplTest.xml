@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.epam.esm.GiftCertificateServiceImplTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2021-04-14T11:36:53" hostname="DESKTOP-TPCNR8Q" time="1.085">
+  <properties/>
+  <testcase name="findAllByTagNegative()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.909"/>
+  <testcase name="descendingDateSortPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.029"/>
+  <testcase name="findByPartOfNamePositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.012"/>
+  <testcase name="ascendingDateSortPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.016"/>
+  <testcase name="findByNamePositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.004"/>
+  <testcase name="findByPartOfNameNegative()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.005"/>
+  <testcase name="findByNameNegative()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.005"/>
+  <testcase name="findByIdPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.008"/>
+  <testcase name="findByPartOfDescriptionPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.012"/>
+  <testcase name="findByIdNegative()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.012"/>
+  <testcase name="findByPartOfDescriptionNegative()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.005"/>
+  <testcase name="descendingNameSortPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.006"/>
+  <testcase name="findCertificateTagsPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.006"/>
+  <testcase name="findAllByTagPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.006"/>
+  <testcase name="ascendingNameSortPositive()" classname="com.epam.esm.GiftCertificateServiceImplTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

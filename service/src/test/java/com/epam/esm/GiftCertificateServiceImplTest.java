@@ -1,10 +1,11 @@
 package com.epam.esm;
 
 import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.service.CertificateTagsService;
+import com.epam.esm.service.CertificatesTagsService;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 
-public class GiftCertificateServiceTest {
+public class GiftCertificateServiceImplTest {
 
     @InjectMocks
     @Spy
@@ -29,10 +30,10 @@ public class GiftCertificateServiceTest {
     private GiftCertificateDao dao;
 
     @Mock
-    private TagService tagService;
+    private TagService tagServiceImpl;
 
     @Mock
-    private CertificateTagsService certificateTagsService;
+    private CertificatesTagsService certificateTagsServiceImpl;
 
     @BeforeEach
     public void setup() {
@@ -125,7 +126,7 @@ public class GiftCertificateServiceTest {
             add(testEntity);
         }};
 
-        when(tagService.findByName(tagTest.getName())).thenReturn(tagTest);
+        when(tagServiceImpl.findByName(tagTest.getName())).thenReturn(tagTest);
         when(dao.findByTagId(tagTest.getId())).thenReturn(testList);
         List<GiftCertificate> allByTag = service.findAllByTag(tagTest.getName());
         assertEquals(allByTag,testList);
@@ -138,7 +139,7 @@ public class GiftCertificateServiceTest {
                 .setName("Test")
                 .build();
 
-        when(tagService.findByName(tagTest.getName())).thenReturn(tagTest);
+        when(tagServiceImpl.findByName(tagTest.getName())).thenReturn(tagTest);
         when(dao.findByTagId(tagTest.getId())).thenReturn(Collections.emptyList());
         assertThrows(EntityNotFoundException.class,() -> {
             service.findAllByTag(tagTest.getName()); });
@@ -234,7 +235,7 @@ public class GiftCertificateServiceTest {
         List<Tag> current = new ArrayList<Tag>() {{
             add(tagTest);
         }};
-        when(tagService.findCertificateTags(testEntity.getId())).thenReturn(current);
+        when(tagServiceImpl.findCertificateTags(testEntity.getId())).thenReturn(current);
         Set<Tag> certificateTags = service.findCertificateTags(testEntity.getId());
         assertEquals(expected,certificateTags);
     }

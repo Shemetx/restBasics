@@ -7,6 +7,7 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.impl.GiftCertificateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/certificates")
 public class GiftCertificatesController {
-    private GiftCertificateService giftCertificateService;
+    private GiftCertificateService giftCertificateServiceImpl;
     private GiftCertificateConvertor convertor;
 
     /**
@@ -36,11 +37,11 @@ public class GiftCertificatesController {
     /**
      * Sets gift certificate service.
      *
-     * @param giftCertificateService the gift certificate service
+     * @param giftCertificateServiceImpl the gift certificate service
      */
     @Autowired
-    public void setGiftCertificateService(GiftCertificateService giftCertificateService) {
-        this.giftCertificateService = giftCertificateService;
+    public void setGiftCertificateService(GiftCertificateServiceImpl giftCertificateServiceImpl) {
+        this.giftCertificateServiceImpl = giftCertificateServiceImpl;
     }
 
     /**
@@ -50,7 +51,7 @@ public class GiftCertificatesController {
      */
     @GetMapping()
     public List<GiftCertificateDto> index() {
-        List<GiftCertificate> dtoList = giftCertificateService.findAll();
+        List<GiftCertificate> dtoList = giftCertificateServiceImpl.findAll();
         return convertor.entityToDto(dtoList);
     }
 
@@ -62,7 +63,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/{id}")
     public GiftCertificateDto show(@PathVariable("id") int id) {
-        GiftCertificate certificate = giftCertificateService.findById(id);
+        GiftCertificate certificate = giftCertificateServiceImpl.findById(id);
         return convertor.entityToDto(certificate);
     }
 
@@ -75,9 +76,9 @@ public class GiftCertificatesController {
     @PostMapping()
     public GiftCertificateDto create(@RequestBody GiftCertificateDto dto) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
-        giftCertificateService.save(giftCertificate);
-        GiftCertificate byName = giftCertificateService.findByName(dto.getName());
-        giftCertificateService.parseCertificateTags(dto.getTags(), byName.getId());
+        giftCertificateServiceImpl.save(giftCertificate);
+        GiftCertificate byName = giftCertificateServiceImpl.findByName(dto.getName());
+        giftCertificateServiceImpl.parseCertificateTags(dto.getTags(), byName.getId());
         return show(byName.getId());
     }
 
@@ -88,12 +89,12 @@ public class GiftCertificatesController {
      * @param id  the id
      * @return the gift certificate dto
      */
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public GiftCertificateDto update(@RequestBody GiftCertificateDto dto, @PathVariable("id") int id) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         giftCertificate.setId(id);
-        giftCertificateService.update(giftCertificate);
-        giftCertificateService.parseCertificateTags(dto.getTags(), id);
+        giftCertificateServiceImpl.update(giftCertificate);
+        giftCertificateServiceImpl.parseCertificateTags(dto.getTags(), id);
         return show(id);
     }
 
@@ -105,8 +106,8 @@ public class GiftCertificatesController {
      */
     @DeleteMapping("/{id}")
     public List<GiftCertificateDto> delete(@PathVariable("id") int id) {
-        giftCertificateService.delete(id);
-        List<GiftCertificate> dtoList = giftCertificateService.findAll();
+        giftCertificateServiceImpl.delete(id);
+        List<GiftCertificate> dtoList = giftCertificateServiceImpl.findAll();
         return convertor.entityToDto(dtoList);
     }
 
@@ -132,7 +133,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/ascending/date")
     public List<GiftCertificateDto> showAscendingDate() {
-        List<GiftCertificate> certificateList = giftCertificateService.getAscendingDate();
+        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getAscendingDate();
         return convertor.entityToDto(certificateList);
     }
 
@@ -143,7 +144,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/descending/date")
     public List<GiftCertificateDto> showDescendingDate() {
-        List<GiftCertificate> certificateList = giftCertificateService.getDescendingDate();
+        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getDescendingDate();
         return convertor.entityToDto(certificateList);
     }
 
@@ -154,7 +155,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/ascending/name")
     public List<GiftCertificateDto> showAscendingName() {
-        List<GiftCertificate> certificateList = giftCertificateService.getAscendingName();
+        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getAscendingName();
         return convertor.entityToDto(certificateList);
     }
 
@@ -165,7 +166,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/descending/name")
     public List<GiftCertificateDto> showDescendingName() {
-        List<GiftCertificate> certificateList = giftCertificateService.getDescendingName();
+        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getDescendingName();
         return convertor.entityToDto(certificateList);
     }
 
@@ -177,7 +178,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/name/{name}")
     public List<GiftCertificateDto> showByName(@PathVariable("name") String name) {
-        List<GiftCertificate> byPartOfName = giftCertificateService.findByPartOfName(name);
+        List<GiftCertificate> byPartOfName = giftCertificateServiceImpl.findByPartOfName(name);
         return convertor.entityToDto(byPartOfName);
     }
 
@@ -189,7 +190,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/description/{description}")
     public List<GiftCertificateDto> showByDescription(@PathVariable("description") String description) {
-        List<GiftCertificate> byPartOfDescr = giftCertificateService.findByPartOfDescription(description);
+        List<GiftCertificate> byPartOfDescr = giftCertificateServiceImpl.findByPartOfDescription(description);
         return convertor.entityToDto(byPartOfDescr);
     }
 
@@ -201,7 +202,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/tag/{tag}")
     public List<GiftCertificateDto> showByTag(@PathVariable("tag") String tag) {
-        List<GiftCertificate> certificateList = giftCertificateService.findAllByTag(tag);
+        List<GiftCertificate> certificateList = giftCertificateServiceImpl.findAllByTag(tag);
         return convertor.entityToDto(certificateList);
     }
     /**

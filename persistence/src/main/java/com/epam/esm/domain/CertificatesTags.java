@@ -4,7 +4,7 @@ package com.epam.esm.domain;
 /**
  * The type Certificates tags.
  */
-public class CertificatesTags implements BaseEntity {
+public class CertificatesTags  {
 
     private int certificateId;
     private int tagId;
