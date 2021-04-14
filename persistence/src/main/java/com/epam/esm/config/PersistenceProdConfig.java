@@ -20,7 +20,7 @@ import java.util.Objects;
 @Configuration
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:application.properties")
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @Profile("prod")
 public class PersistenceProdConfig implements WebMvcConfigurer {
 

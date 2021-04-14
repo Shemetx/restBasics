@@ -1,9 +1,8 @@
 package com.epam.esm;
 
 import com.epam.esm.dao.CertificatesTagsDao;
-import com.epam.esm.dao.impl.CertificatesTagsDaoImpl;
 import com.epam.esm.domain.CertificatesTags;
-import com.epam.esm.service.CertificatesTagsService;
+import com.epam.esm.service.impl.CertificatesTagsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,14 +10,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 
 public class CertificatesTagsServiceImplTest {
 
     @InjectMocks
-    private CertificatesTagsService service;
+    private CertificatesTagsServiceImpl service;
 
     @Mock
     private CertificatesTagsDao dao;

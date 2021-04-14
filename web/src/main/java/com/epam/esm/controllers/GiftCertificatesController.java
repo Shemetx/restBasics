@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 /**
@@ -47,11 +46,19 @@ public class GiftCertificatesController {
     /**
      * Return all certificates to client
      *
+     * @param sortType the sort type asc/desc
+     * @param sortBy   the sort by name/date
      * @return the list
      */
     @GetMapping()
-    public List<GiftCertificateDto> index() {
-        List<GiftCertificate> dtoList = giftCertificateServiceImpl.findAll();
+    public List<GiftCertificateDto> index(@RequestParam(required = false) String sortType,
+                                          @RequestParam(required = false) String sortBy) {
+        List<GiftCertificate> dtoList;
+        if (sortType != null && sortBy != null) {
+            dtoList = giftCertificateServiceImpl.getSortedList(sortType,sortBy);
+        } else {
+            dtoList = giftCertificateServiceImpl.findAll();
+        }
         return convertor.entityToDto(dtoList);
     }
 
@@ -124,50 +131,6 @@ public class GiftCertificatesController {
         String message = ex.getMessage();
         return new Error(404, message);
 
-    }
-
-    /**
-     * Show ascending date list.
-     *
-     * @return the list
-     */
-    @GetMapping("/ascending/date")
-    public List<GiftCertificateDto> showAscendingDate() {
-        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getAscendingDate();
-        return convertor.entityToDto(certificateList);
-    }
-
-    /**
-     * Show descending date list.
-     *
-     * @return the list
-     */
-    @GetMapping("/descending/date")
-    public List<GiftCertificateDto> showDescendingDate() {
-        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getDescendingDate();
-        return convertor.entityToDto(certificateList);
-    }
-
-    /**
-     * Show ascending name list.
-     *
-     * @return the list
-     */
-    @GetMapping("/ascending/name")
-    public List<GiftCertificateDto> showAscendingName() {
-        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getAscendingName();
-        return convertor.entityToDto(certificateList);
-    }
-
-    /**
-     * Show descending name list.
-     *
-     * @return the list
-     */
-    @GetMapping("/descending/name")
-    public List<GiftCertificateDto> showDescendingName() {
-        List<GiftCertificate> certificateList = giftCertificateServiceImpl.getDescendingName();
-        return convertor.entityToDto(certificateList);
     }
 
     /**

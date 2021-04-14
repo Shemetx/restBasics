@@ -7,8 +7,8 @@ import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.service.CertificatesTagsService;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.CertificatesTagsService;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * GiftCertificate service to connect controller with dao layer
+ * implementation of GiftCertificateService to connect controller with dao layer
  */
 @Component
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -64,9 +64,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     public void save(GiftCertificate giftCertificate) {
         try {
-        giftCertificateDaoImpl.save(giftCertificate);
+            giftCertificateDaoImpl.save(giftCertificate);
         } catch (DataIntegrityViolationException e) {
-            throw new EntityAlreadyExistsException("Tag with name: '" +giftCertificate.getName() +"' already exists" );
+            throw new EntityAlreadyExistsException("Tag with name: '" + giftCertificate.getName() + "' already exists");
         }
     }
 
@@ -155,47 +155,55 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     /**
-     * Gets all by ascending date.
+     *  Gets sorted list
      *
-     * @return the ascending date
+     * @param sortType type of sort asc/desc
+     * @param sortBy sorting parameter ex: name/date
+     * @return sorted list
      */
-    public List<GiftCertificate> getAscendingDate() {
-        List<GiftCertificate> all = findAll();
-        all.sort(Comparator.comparing(GiftCertificate::getCreateDate));
-        return all;
+    public List<GiftCertificate> getSortedList(String sortType, String sortBy) {
+        List<GiftCertificate> sortedList = Collections.emptyList();
+        if (sortType.equals("asc")) {
+            sortedList = getAscendingList(sortBy);
+        }
+        if (sortType.equals("desc")) {
+            sortedList = getDescendingList(sortBy);
+        }
+        return sortedList;
     }
 
     /**
-     * Gets all by ascending name.
+     *  Gets ascending sorted list
      *
-     * @return the ascending name
+     * @param sortBy sorting parameter
+     * @return sorted by parameter list
      */
-    public List<GiftCertificate> getAscendingName() {
-        List<GiftCertificate> all = findAll();
-        all.sort(Comparator.comparing(GiftCertificate::getName));
-        return all;
+    private List<GiftCertificate> getAscendingList(String sortBy) {
+        List<GiftCertificate> sortedList = findAll();
+        if (sortBy.equals("name")) {
+            sortedList.sort(Comparator.comparing(GiftCertificate::getName));
+        }
+        if (sortBy.equals("date")) {
+            sortedList.sort(Comparator.comparing(GiftCertificate::getCreateDate));
+        }
+        return sortedList;
     }
 
     /**
-     * Gets all by descending date.
+     *  Gets descending sorted list
      *
-     * @return the descending date
+     * @param sortBy sorting parameter
+     * @return sorted by parameter list
      */
-    public List<GiftCertificate> getDescendingDate() {
-        List<GiftCertificate> all = findAll();
-        all.sort(Comparator.comparing(GiftCertificate::getCreateDate, Comparator.reverseOrder()));
-        return all;
-    }
-
-    /**
-     * Gets all by descending name.
-     *
-     * @return the descending name
-     */
-    public List<GiftCertificate> getDescendingName() {
-        List<GiftCertificate> all = findAll();
-        all.sort(Comparator.comparing(GiftCertificate::getName, Comparator.reverseOrder()));
-        return all;
+    private List<GiftCertificate> getDescendingList(String sortBy) {
+        List<GiftCertificate> sortedList = findAll();
+        if (sortBy.equals("name")) {
+            sortedList.sort(Comparator.comparing(GiftCertificate::getName, Comparator.reverseOrder()));
+        }
+        if (sortBy.equals("date")) {
+            sortedList.sort(Comparator.comparing(GiftCertificate::getCreateDate, Comparator.reverseOrder()));
+        }
+        return sortedList;
     }
 
     /**
@@ -231,24 +239,25 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @param tags the tags
      * @param id   the id
      */
+
     @Transactional
     public void parseCertificateTags(Set<Tag> tags, int id) {
-                List<Tag> currentTags = tagServiceImpl.findAll();
-                if (tags != null) {
-                    for (Tag tag : tags) {
-                        Optional<Tag> byName = currentTags.stream().filter(x -> tag.getName().equals(x.getName())).findFirst();
-                        if (!byName.isPresent()) {
-                            tagServiceImpl.save(tag);
-                        }
-                        CertificatesTags certificatesTags = CertificatesTags.Builder.newInstance()
-                                .setCertificateId(id)
-                                .setTagId(tagServiceImpl.findByName(tag.getName()).getId())
-                                .build();
-                        CertificatesTags byIds = certificateTagsServiceImpl.findByIds(certificatesTags.getCertificateId(), certificatesTags.getTagId());
-                        if (byIds == null) {
-                            certificateTagsServiceImpl.save(certificatesTags);
-                        }
-                    }
+        List<Tag> currentTags = tagServiceImpl.findAll();
+        if (tags != null) {
+            for (Tag tag : tags) {
+                Optional<Tag> byName = currentTags.stream().filter(x -> tag.getName().equals(x.getName())).findFirst();
+                if (!byName.isPresent()) {
+                    tagServiceImpl.save(tag);
+                }
+                CertificatesTags certificatesTags = CertificatesTags.Builder.newInstance()
+                        .setCertificateId(id)
+                        .setTagId(tagServiceImpl.findByName(tag.getName()).getId())
+                        .build();
+                CertificatesTags byIds = certificateTagsServiceImpl.findByIds(certificatesTags.getCertificateId(), certificatesTags.getTagId());
+                if (byIds == null) {
+                    certificateTagsServiceImpl.save(certificatesTags);
                 }
             }
+        }
+    }
 }

@@ -1,13 +1,11 @@
 package com.epam.esm;
 
 import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.service.CertificatesTagsService;
-import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.impl.GiftCertificateServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -24,16 +22,13 @@ public class GiftCertificateServiceImplTest {
 
     @InjectMocks
     @Spy
-    private GiftCertificateService service;
+    private GiftCertificateServiceImpl service;
 
     @Mock
     private GiftCertificateDao dao;
 
     @Mock
     private TagService tagServiceImpl;
-
-    @Mock
-    private CertificatesTagsService certificateTagsServiceImpl;
 
     @BeforeEach
     public void setup() {
@@ -161,7 +156,7 @@ public class GiftCertificateServiceImplTest {
         }};
         Mockito.doReturn(current).when(service).findAll();
 
-        List<GiftCertificate> ascendingDate = service.getAscendingDate();
+        List<GiftCertificate> ascendingDate = service.getSortedList("asc","date");
         assertEquals(expected,ascendingDate);
     }
 
@@ -180,7 +175,7 @@ public class GiftCertificateServiceImplTest {
         }};
         Mockito.doReturn(current).when(service).findAll();
 
-        List<GiftCertificate> ascendingDate = service.getDescendingDate();
+        List<GiftCertificate> ascendingDate = service.getSortedList("desc","date");
         assertEquals(expected,ascendingDate);
     }
 
@@ -199,7 +194,7 @@ public class GiftCertificateServiceImplTest {
         }};
         Mockito.doReturn(current).when(service).findAll();
 
-        List<GiftCertificate> ascendingDate = service.getAscendingName();
+        List<GiftCertificate> ascendingDate = service.getSortedList("asc","name");
         assertEquals(expected,ascendingDate);
     }
     @Test
@@ -218,7 +213,7 @@ public class GiftCertificateServiceImplTest {
         }};
         Mockito.doReturn(current).when(service).findAll();
 
-        List<GiftCertificate> ascendingDate = service.getDescendingName();
+        List<GiftCertificate> ascendingDate = service.getSortedList("desc","name");
         assertEquals(expected,ascendingDate);
     }
 

@@ -6,6 +6,7 @@ import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
 
+import com.epam.esm.service.impl.TagServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.when;
 public class TagServiceImplTest {
 
     @InjectMocks
-   private TagService tagServiceImpl;
+   private TagServiceImpl tagServiceImpl;
 
     @Mock
    private TagsDao tagsDaoImpl;
