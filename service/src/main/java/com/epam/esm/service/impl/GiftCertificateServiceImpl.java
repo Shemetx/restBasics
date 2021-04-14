@@ -13,10 +13,7 @@ import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -29,17 +26,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private CertificatesTagsService certificateTagsServiceImpl;
     private TagService tagServiceImpl;
     private GiftCertificateDao giftCertificateDaoImpl;
-    private PlatformTransactionManager transactionManager;
-
-    /**
-     * Sets transaction manager.
-     *
-     * @param transactionManager the transaction manager
-     */
-    @Autowired
-    public void setTransactionManager(PlatformTransactionManager transactionManager) {
-        this.transactionManager = transactionManager;
-    }
 
     /**
      * Sets tag service.
@@ -245,11 +231,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @param tags the tags
      * @param id   the id
      */
+    @Transactional
     public void parseCertificateTags(Set<Tag> tags, int id) {
-        TransactionTemplate template = new TransactionTemplate(transactionManager);
-        template.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
                 List<Tag> currentTags = tagServiceImpl.findAll();
                 if (tags != null) {
                     for (Tag tag : tags) {
@@ -268,7 +251,4 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     }
                 }
             }
-        });
-
-    }
 }

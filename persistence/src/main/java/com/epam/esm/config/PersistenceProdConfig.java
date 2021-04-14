@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
@@ -21,6 +20,7 @@ import java.util.Objects;
 @Configuration
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:application.properties")
+@EnableTransactionManagement
 @Profile("prod")
 public class PersistenceProdConfig implements WebMvcConfigurer {
 
@@ -63,16 +63,5 @@ public class PersistenceProdConfig implements WebMvcConfigurer {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-
-    /**
-     * Transaction manager platform to work with transactions.
-     *
-     * @return the platform transaction manager
-     */
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-        transactionManager.setDataSource(dataSource());
-        return transactionManager;
-    }
+    
 }
