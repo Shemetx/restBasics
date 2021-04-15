@@ -96,7 +96,7 @@ public class GiftCertificatesController {
      * @param id  the id
      * @return the gift certificate dto
      */
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public GiftCertificateDto update(@RequestBody GiftCertificateDto dto, @PathVariable("id") int id) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         giftCertificate.setId(id);
