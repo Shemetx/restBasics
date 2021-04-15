@@ -4,6 +4,7 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.domain.CertificatesTags;
 import com.epam.esm.domain.GiftCertificate;
+import com.epam.esm.util.SortingTypes;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
@@ -162,46 +163,22 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @return sorted list
      */
     public List<GiftCertificate> getSortedList(String sortType, String sortBy) {
-        List<GiftCertificate> sortedList = Collections.emptyList();
-        if (sortType.equals("asc")) {
-            sortedList = getAscendingList(sortBy);
-        }
-        if (sortType.equals("desc")) {
-            sortedList = getDescendingList(sortBy);
-        }
-        return sortedList;
-    }
-
-    /**
-     *  Gets ascending sorted list
-     *
-     * @param sortBy sorting parameter
-     * @return sorted by parameter list
-     */
-    private List<GiftCertificate> getAscendingList(String sortBy) {
         List<GiftCertificate> sortedList = findAll();
-        if (sortBy.equals("name")) {
-            sortedList.sort(Comparator.comparing(GiftCertificate::getName));
-        }
-        if (sortBy.equals("date")) {
-            sortedList.sort(Comparator.comparing(GiftCertificate::getCreateDate));
-        }
-        return sortedList;
-    }
-
-    /**
-     *  Gets descending sorted list
-     *
-     * @param sortBy sorting parameter
-     * @return sorted by parameter list
-     */
-    private List<GiftCertificate> getDescendingList(String sortBy) {
-        List<GiftCertificate> sortedList = findAll();
-        if (sortBy.equals("name")) {
-            sortedList.sort(Comparator.comparing(GiftCertificate::getName, Comparator.reverseOrder()));
-        }
-        if (sortBy.equals("date")) {
-            sortedList.sort(Comparator.comparing(GiftCertificate::getCreateDate, Comparator.reverseOrder()));
+        SortingTypes sortingTypes = SortingTypes.resolveByName(sortType,sortBy);
+        switch (sortingTypes) {
+            case ASC_NAME:
+                sortedList.sort(Comparator.comparing(GiftCertificate::getName));
+                break;
+            case ASC_DATE:
+                sortedList.sort(Comparator.comparing(GiftCertificate::getCreateDate));
+                break;
+            case DESC_NAME:
+                sortedList.sort(Comparator.comparing(GiftCertificate::getName, Comparator.reverseOrder()));
+                break;
+            case DESC_DATE:
+                sortedList.sort(Comparator.comparing(GiftCertificate::getCreateDate, Comparator.reverseOrder()));
+                break;
+            default:
         }
         return sortedList;
     }
