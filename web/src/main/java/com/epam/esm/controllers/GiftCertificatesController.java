@@ -10,6 +10,7 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.impl.GiftCertificateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -112,10 +113,9 @@ public class GiftCertificatesController {
      * @return the list
      */
     @DeleteMapping("/{id}")
-    public List<GiftCertificateDto> delete(@PathVariable("id") int id) {
+    public ResponseEntity delete(@PathVariable("id") int id) {
         giftCertificateServiceImpl.delete(id);
-        List<GiftCertificate> dtoList = giftCertificateServiceImpl.findAll();
-        return convertor.entityToDto(dtoList);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
 
