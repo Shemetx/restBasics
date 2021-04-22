@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Optional;
@@ -41,9 +42,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag findByName(String name) {
-       Tag byName = tagDao.findByName(name);
-        if (byName == null) {
+        Tag byName;
+        try {
+            byName = tagDao.findByName(name);
+        } catch (NoResultException e) {
             throw new EntityNotFoundException("Tag with name: '" + name + "' not found");
+
         }
         return byName;
     }
