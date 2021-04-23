@@ -3,14 +3,22 @@ package com.epam.esm.dto;
 import com.epam.esm.domain.Tag;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class GiftCertificateDto {
+
     private int id;
+
+    @Size(min=11 ,max = 100,message = "Certificate name should be between 11 and 100 characters")
     private String name;
+    @Size(min = 20, max = 255, message = "Certificate description should be between 20 and 255 characters")
     private String description;
+    @Positive
     private float price;
+    @Positive
     private int duration;
     @JsonFormat(
             shape = JsonFormat.Shape.STRING,

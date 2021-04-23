@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -66,7 +67,7 @@ public class GiftCertificatesController {
      * @return the gift certificate dto
      */
     @PostMapping()
-    public ResponseEntity<GiftCertificateDto> create(@RequestBody GiftCertificateDto dto) {
+    public ResponseEntity<GiftCertificateDto> create(@Valid @RequestBody GiftCertificateDto dto) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         GiftCertificate save = giftCertificateService.save(giftCertificate);
         return new ResponseEntity<>(convertor.entityToDto(save),HttpStatus.CREATED);
@@ -80,11 +81,10 @@ public class GiftCertificatesController {
      * @return the gift certificate dto
      */
     @PutMapping("/{id}")
-    public GiftCertificateDto update(@RequestBody GiftCertificateDto dto, @PathVariable("id") int id) {
+    public GiftCertificateDto update(@Valid @RequestBody GiftCertificateDto dto, @PathVariable("id") int id) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         giftCertificate.setId(id);
         giftCertificateService.update(giftCertificate);
-        //giftCertificateService.parseCertificateTags(dto.getTags(), id);
         return show(id);
     }
     /**
