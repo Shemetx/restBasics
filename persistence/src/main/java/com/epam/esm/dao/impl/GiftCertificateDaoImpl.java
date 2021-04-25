@@ -19,7 +19,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String FIND_BY_PART_OF_NAME = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.name) >= 1  ";
     private static final String FIND_BY_PART_OF_DESCRIPTION = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.description) >= 1";
     private static final String FIND_BY_TAG_ID = SELECT_GIFT_CERTIFICATE + " join g.tags tags on tags.id = ?1";
-    private static final String UPDATE_PRICE = "update GiftCertificate set price = ?1";
+
     @PersistenceContext
     private EntityManager entityManager;
 

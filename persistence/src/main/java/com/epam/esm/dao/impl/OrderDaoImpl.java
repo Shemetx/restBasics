@@ -11,11 +11,12 @@ import java.util.List;
 @Component
 public class OrderDaoImpl implements OrderDao {
 
+    private static final String SELECT_ORDER = "select t from Order t ";
+    private static final String FIND_BY_USER_ID = SELECT_ORDER + "where t.customer.id = ?1";
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String SELECT_ORDER = "select t from Order t ";
-    private static final String FIND_BY_USER_ID = SELECT_ORDER + "where t.customer.id = ?1";
     @Override
     public Order save(Order order) {
         return entityManager.merge(order);
@@ -28,6 +29,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findByUserId(int id) {
-        return entityManager.createQuery(FIND_BY_USER_ID).setParameter(1,id).getResultList();
+        return entityManager.createQuery(FIND_BY_USER_ID).setParameter(1, id).getResultList();
     }
+
+
 }

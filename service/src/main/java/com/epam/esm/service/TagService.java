@@ -11,4 +11,5 @@ public interface TagService {
     Tag findByName(String name);
     Tag save(Tag tag);
     void delete(Integer id);
+    Tag findMostUsed();
 }

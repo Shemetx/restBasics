@@ -7,14 +7,11 @@ import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Table;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class TagServiceImpl implements TagService {
@@ -69,6 +66,11 @@ public class TagServiceImpl implements TagService {
     public void delete(Integer id) {
         Tag byId = findById(id);
         tagDao.delete(byId);
+    }
+
+    @Override
+    public Tag findMostUsed() {
+        return tagDao.findMostUsed();
     }
 
 }

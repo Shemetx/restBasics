@@ -11,4 +11,5 @@ public interface TagDao {
     Tag findById(Integer id);
     void save(Tag tag);
     void delete(Tag tag);
+    Tag findMostUsed();
 }
