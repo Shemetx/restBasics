@@ -18,8 +18,7 @@ public class GiftCertificateConvertor {
      */
     public GiftCertificateDto entityToDto(GiftCertificate giftCertificate) {
         ModelMapper mapper = new ModelMapper();
-        GiftCertificateDto map = mapper.map(giftCertificate, GiftCertificateDto.class);
-        return map;
+        return mapper.map(giftCertificate, GiftCertificateDto.class);
     }
 
     /**

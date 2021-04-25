@@ -1,7 +1,6 @@
 package com.epam.esm.domain;
 
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,7 +13,6 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Size(min= 3,max = 16,message = "Tag name should be between 3 and 16 characters")
     @Column(name = "name", unique = true)
     private String name;

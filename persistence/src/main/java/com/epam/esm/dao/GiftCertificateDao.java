@@ -18,5 +18,4 @@ public interface GiftCertificateDao  {
     void delete(GiftCertificate giftCertificate);
     void update(GiftCertificate oldCert,GiftCertificate newCert);
     GiftCertificate findById(Integer id);
-
 }

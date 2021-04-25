@@ -87,6 +87,7 @@ public class GiftCertificatesController {
         giftCertificateService.update(giftCertificate);
         return show(id);
     }
+
     /**
      * Delete list.
      *
@@ -133,4 +134,6 @@ public class GiftCertificatesController {
         List<GiftCertificate> certificateList = giftCertificateService.findAllByTag(tag);
         return convertor.entityToDto(certificateList);
     }
+
+
 }
