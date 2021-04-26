@@ -12,6 +12,6 @@ public interface GiftCertificateService {
     GiftCertificate findById(Integer id);
     List<GiftCertificate> findByPartOfName(String name);
     List<GiftCertificate> findByPartOfDescription(String description);
-    List<GiftCertificate> findAllByTag(String tag);
+    List<GiftCertificate> findAllByTags(List<String> tags);
     GiftCertificate update(GiftCertificate giftCertificate);
 }

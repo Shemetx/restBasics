@@ -2,10 +2,12 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.domain.GiftCertificate;
+import com.epam.esm.domain.Tag;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Component
@@ -18,7 +20,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String ORDER_BY_DATE_DESC = SELECT_GIFT_CERTIFICATE + " order by g.createDate desc";
     private static final String FIND_BY_PART_OF_NAME = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.name) >= 1  ";
     private static final String FIND_BY_PART_OF_DESCRIPTION = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.description) >= 1";
-    private static final String FIND_BY_TAG_ID = SELECT_GIFT_CERTIFICATE + " join g.tags tags on tags.id = ?1";
+    private static final String FIND_BY_TAG_ID = "select * from gift_certificate\n" +
+            "join certificates_tags ct on gift_certificate.id = ct.cert_id\n" +
+            "where ";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -58,10 +62,25 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findByTag(Integer id) {
-        return entityManager.createQuery(FIND_BY_TAG_ID)
-                .setParameter(1, id)
-                .getResultList();
+    public List<GiftCertificate> findByTags(List<Tag> tags) {
+        StringBuilder result = getDynamicFindByTags(tags);
+        Query nativeQuery = entityManager.createNativeQuery(String.valueOf(result), GiftCertificate.class);
+        for(int i = 0; i <tags.size();i++) {
+            nativeQuery.setParameter(i+1,tags.get(i).getId());
+        }
+        return nativeQuery.getResultList();
+    }
+
+    private StringBuilder getDynamicFindByTags(List<Tag> tags) {
+        StringBuilder result = new StringBuilder(FIND_BY_TAG_ID);
+        for (int i = 0; i < tags.size(); i++) {
+            result.append("?").append(i+1).append(" ");
+            if (i < tags.size() - 1) {
+                result.append("and ");
+            }
+        }
+        result.append("in (ct.tag_id)");
+        return result;
     }
 
     @Override

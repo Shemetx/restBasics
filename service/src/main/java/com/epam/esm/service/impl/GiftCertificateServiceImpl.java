@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -112,11 +113,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificate> findAllByTag(String tag) {
-        Tag byName = tagService.findByName(tag);
-        List<GiftCertificate> byTag = giftCertificateDao.findByTag(byName.getId());
+    public List<GiftCertificate> findAllByTags(List<String> tags) {
+        List<Tag> collect = tags.stream().map(temp -> tagService.findByName(temp)).collect(Collectors.toList());
+        List<GiftCertificate> byTag = giftCertificateDao.findByTags(collect);
         if (byTag.isEmpty()) {
-            throw new EntityNotFoundException("Gift certificates with tag name: " + tag + " not found");
+            throw new EntityNotFoundException("Gift certificates with tag name: " + tags + " not found");
         }
         return byTag;
     }

@@ -123,16 +123,11 @@ public class GiftCertificatesController {
         return convertor.entityToDto(byPartOfDescr);
     }
 
-    /**
-     * Show all certificates by tag
-     *
-     * @param tag the tag
-     * @return the list
-     */
-    @GetMapping("/tag/{tag}")
-    public List<GiftCertificateDto> showByTag(@PathVariable("tag") String tag) {
-        List<GiftCertificate> certificateList = giftCertificateService.findAllByTag(tag);
-        return convertor.entityToDto(certificateList);
+
+    @GetMapping("/tag")
+    public List<GiftCertificateDto> showByTag(@RequestParam(value = "name") List<String> tags) {
+      List<GiftCertificate> certificateList = giftCertificateService.findAllByTags(tags);
+       return convertor.entityToDto(certificateList);
     }
 
 
