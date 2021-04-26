@@ -8,6 +8,7 @@ import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
+import com.epam.esm.util.PageUtil;
 import com.epam.esm.util.SortingTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,13 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private GiftCertificateDao giftCertificateDao;
     private TagService tagService;
+    private PageUtil pageUtil;
+
+    @Autowired
+    public void setPageUtil(PageUtil pageUtil) {
+        this.pageUtil = pageUtil;
+    }
 
     @Autowired
     public void setGiftCertificateDao(GiftCertificateDaoImpl giftCertificateDao) {
@@ -59,26 +65,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 
     @Override
-    public List<GiftCertificate> findAll() {
-        return giftCertificateDao.findAll();
+    public List<GiftCertificate> findAll(int page, int size) {
+        page = pageUtil.getCorrectPage(page, size);
+        return giftCertificateDao.findAll(page, size);
     }
 
     @Override
-    public List<GiftCertificate> getSortedList(String sortType, String sortBy) {
+    public List<GiftCertificate> getSortedList(String sortType, String sortBy, int page, int size) {
         List<GiftCertificate> sortedList = Collections.emptyList();
         SortingTypes sortingTypes = SortingTypes.resolveByName(sortType, sortBy);
+        page = pageUtil.getCorrectPage(page, size);
         switch (sortingTypes) {
             case ASC_NAME:
-                sortedList = giftCertificateDao.findByOrderByNameAsc();
+                sortedList = giftCertificateDao.findByOrderByNameAsc(page, size);
                 break;
             case ASC_DATE:
-                sortedList = giftCertificateDao.findByOrderByCreateDateAsc();
+                sortedList = giftCertificateDao.findByOrderByCreateDateAsc(page, size);
                 break;
             case DESC_NAME:
-                sortedList = giftCertificateDao.findByOrderByNameDesc();
+                sortedList = giftCertificateDao.findByOrderByNameDesc(page, size);
                 break;
             case DESC_DATE:
-                sortedList = giftCertificateDao.findByOrderByCreateDateDesc();
+                sortedList = giftCertificateDao.findByOrderByCreateDateDesc(page, size);
                 break;
             default:
         }
@@ -95,27 +103,30 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificate> findByPartOfName(String name) {
-        List<GiftCertificate> byPartOfName = giftCertificateDao.findByPartOfName(name);
+    public List<GiftCertificate> findByPartOfName(String name, int page, int size) {
+        page = pageUtil.getCorrectPage(page, size);
+        List<GiftCertificate> byPartOfName = giftCertificateDao.findByPartOfName(name, page, size);
         if (byPartOfName.isEmpty()) {
-            throw new EntityNotFoundException("Gift certificate with part of name: '" +name +"' not found");
+            throw new EntityNotFoundException("Gift certificate with part of name: '" + name + "' not found");
         }
         return byPartOfName;
     }
 
     @Override
-    public List<GiftCertificate> findByPartOfDescription(String description) {
-        List<GiftCertificate> byPartOfDescription = giftCertificateDao.findByPartOfDescription(description);
+    public List<GiftCertificate> findByPartOfDescription(String description, int page, int size) {
+        page = pageUtil.getCorrectPage(page, size);
+        List<GiftCertificate> byPartOfDescription = giftCertificateDao.findByPartOfDescription(description, page, size);
         if (byPartOfDescription.isEmpty()) {
-            throw new EntityNotFoundException("Gift certificate with part of description: '" +description +"' not found");
+            throw new EntityNotFoundException("Gift certificate with part of description: '" + description + "' not found");
         }
         return byPartOfDescription;
     }
 
     @Override
-    public List<GiftCertificate> findAllByTags(List<String> tags) {
+    public List<GiftCertificate> findAllByTags(List<String> tags, int page, int size) {
+        page = pageUtil.getCorrectPage(page, size);
         List<Tag> collect = tags.stream().map(temp -> tagService.findByName(temp)).collect(Collectors.toList());
-        List<GiftCertificate> byTag = giftCertificateDao.findByTags(collect);
+        List<GiftCertificate> byTag = giftCertificateDao.findByTags(collect, page, size);
         if (byTag.isEmpty()) {
             throw new EntityNotFoundException("Gift certificates with tag name: " + tags + " not found");
         }
@@ -126,7 +137,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificate update(GiftCertificate giftCertificate) {
         giftCertificate.setLastUpdateDate(LocalDateTime.now());
-        giftCertificateDao.update(findById(giftCertificate.getId()),giftCertificate);
+        giftCertificateDao.update(findById(giftCertificate.getId()), giftCertificate);
         return null;
     }
 

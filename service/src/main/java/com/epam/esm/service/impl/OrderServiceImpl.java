@@ -6,6 +6,7 @@ import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Order;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
+import com.epam.esm.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,12 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDao orderDao;
     private GiftCertificateService certificateService;
+    private PageUtil pageUtil;
+
+    @Autowired
+    public void setPageUtil(PageUtil pageUtil) {
+        this.pageUtil = pageUtil;
+    }
 
     @Autowired
     public void setCertificateService(GiftCertificateServiceImpl certificateService) {
@@ -49,12 +56,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAll() {
-        return orderDao.findAll();
+    public List<Order> findAll(int page,int size) {
+        page = pageUtil.getCorrectPage(page,size);
+        return orderDao.findAll(page,size);
     }
 
     @Override
-    public List<Order> findByUserId(int id) {
-        return orderDao.findByUserId(id);
+    public List<Order> findByUserId(int id,int page,int size) {
+        page = pageUtil.getCorrectPage(page,size);
+        return orderDao.findByUserId(id,page,size);
     }
+
 }

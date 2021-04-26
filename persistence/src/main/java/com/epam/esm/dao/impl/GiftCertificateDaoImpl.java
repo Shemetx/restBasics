@@ -28,43 +28,61 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private EntityManager entityManager;
 
     @Override
-    public List<GiftCertificate> findByOrderByNameAsc() {
-        return entityManager.createQuery(ORDER_BY_NAME_ASC).getResultList();
+    public List<GiftCertificate> findByOrderByNameAsc(int page,int size) {
+        return entityManager.createQuery(ORDER_BY_NAME_ASC,GiftCertificate.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByOrderByNameDesc() {
-        return entityManager.createQuery(ORDER_BY_NAME_DESC).getResultList();
+    public List<GiftCertificate> findByOrderByNameDesc(int page,int size) {
+        return entityManager.createQuery(ORDER_BY_NAME_DESC,GiftCertificate.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByOrderByCreateDateAsc() {
-        return entityManager.createQuery(ORDER_BY_DATE_ASC).getResultList();
+    public List<GiftCertificate> findByOrderByCreateDateAsc(int page,int size) {
+        return entityManager.createQuery(ORDER_BY_DATE_ASC,GiftCertificate.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByOrderByCreateDateDesc() {
-        return entityManager.createQuery(ORDER_BY_DATE_DESC).getResultList();
+    public List<GiftCertificate> findByOrderByCreateDateDesc(int page,int size) {
+        return entityManager.createQuery(ORDER_BY_DATE_DESC,GiftCertificate.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByPartOfName(String name) {
-        return entityManager.createQuery(FIND_BY_PART_OF_NAME)
+    public List<GiftCertificate> findByPartOfName(String name,int page,int size) {
+        return entityManager.createQuery(FIND_BY_PART_OF_NAME,GiftCertificate.class)
                 .setParameter(1, name)
+                .setFirstResult(page)
+                .setMaxResults(size)
                 .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByPartOfDescription(String description) {
-        return entityManager.createQuery(FIND_BY_PART_OF_DESCRIPTION)
+    public List<GiftCertificate> findByPartOfDescription(String description,int page,int size) {
+        return entityManager.createQuery(FIND_BY_PART_OF_DESCRIPTION,GiftCertificate.class)
                 .setParameter(1, description)
+                .setFirstResult(page)
+                .setMaxResults(size)
                 .getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findByTags(List<Tag> tags) {
+    public List<GiftCertificate> findByTags(List<Tag> tags,int page,int size) {
         StringBuilder result = getDynamicFindByTags(tags);
-        Query nativeQuery = entityManager.createNativeQuery(String.valueOf(result), GiftCertificate.class);
+        Query nativeQuery = entityManager.createNativeQuery(String.valueOf(result), GiftCertificate.class)
+                .setFirstResult(page)
+                .setMaxResults(size);
         for(int i = 0; i <tags.size();i++) {
             nativeQuery.setParameter(i+1,tags.get(i).getId());
         }
@@ -84,8 +102,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
-        return entityManager.createQuery(SELECT_GIFT_CERTIFICATE).getResultList();
+    public List<GiftCertificate> findAll(int page,int size) {
+        return entityManager.createQuery(SELECT_GIFT_CERTIFICATE,GiftCertificate.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override

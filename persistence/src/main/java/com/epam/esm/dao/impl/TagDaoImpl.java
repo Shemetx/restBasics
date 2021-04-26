@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Component
@@ -29,12 +32,16 @@ public class TagDaoImpl implements TagDao {
             "            group by tag_id\n" +
             "            order by count(*) desc\n" +
             "            limit 1);";
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public List<Tag> findAll() {
-        return entityManager.createQuery(SELECT_TAG).getResultList();
+    public List<Tag> findAll(int page, int size) {
+        return entityManager.createQuery(SELECT_TAG, Tag.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
@@ -72,5 +79,12 @@ public class TagDaoImpl implements TagDao {
     private Integer findMaxCostUser() {
         Object singleResult = entityManager.createNativeQuery(FIND_USER_MAX_COST).getSingleResult();
         return (Integer) singleResult;
+    }
+
+    private CriteriaQuery<Tag> getCriteria() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
+        Root<Tag> from = criteriaQuery.from(Tag.class);
+        return criteriaQuery.select(from);
     }
 }

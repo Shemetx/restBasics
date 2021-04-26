@@ -28,8 +28,9 @@ public class TagsController {
      * @return the list
      */
     @GetMapping()
-    public List<Tag> index() {
-        return tagService.findAll();
+    public List<Tag> index( @RequestParam(defaultValue = "1") int page,
+                            @RequestParam(defaultValue = "7") int size) {
+        return tagService.findAll(page,size);
     }
 
     /**

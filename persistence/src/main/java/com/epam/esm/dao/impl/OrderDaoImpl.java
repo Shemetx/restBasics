@@ -23,13 +23,19 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findAll() {
-        return entityManager.createQuery(SELECT_ORDER).getResultList();
+    public List<Order> findAll(int page,int size) {
+        return entityManager.createQuery(SELECT_ORDER,Order.class)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
-    public List<Order> findByUserId(int id) {
-        return entityManager.createQuery(FIND_BY_USER_ID).setParameter(1, id).getResultList();
+    public List<Order> findByUserId(int id,int page,int size) {
+        return entityManager.createQuery(FIND_BY_USER_ID,Order.class).setParameter(1, id)
+                .setFirstResult(page)
+                .setMaxResults(size)
+                .getResultList();
     }
 
 

@@ -7,14 +7,14 @@ import java.util.List;
 
 
 public interface GiftCertificateDao  {
-    List<GiftCertificate> findByOrderByNameAsc();
-    List<GiftCertificate> findByOrderByNameDesc();
-    List<GiftCertificate> findByOrderByCreateDateAsc();
-    List<GiftCertificate> findByOrderByCreateDateDesc();
-    List<GiftCertificate> findByPartOfName(String name);
-    List<GiftCertificate> findByPartOfDescription(String description);
-    List<GiftCertificate> findByTags(List<Tag> tags);
-    List<GiftCertificate> findAll();
+    List<GiftCertificate> findByOrderByNameAsc(int page,int size);
+    List<GiftCertificate> findByOrderByNameDesc(int page,int size);
+    List<GiftCertificate> findByOrderByCreateDateAsc(int page,int size);
+    List<GiftCertificate> findByOrderByCreateDateDesc(int page,int size);
+    List<GiftCertificate> findByPartOfName(String name,int page,int size);
+    List<GiftCertificate> findByPartOfDescription(String description,int page,int size);
+    List<GiftCertificate> findByTags(List<Tag> tags,int page,int size);
+    List<GiftCertificate> findAll(int page,int size);
     GiftCertificate save(GiftCertificate giftCertificate);
     void delete(GiftCertificate giftCertificate);
     void update(GiftCertificate oldCert,GiftCertificate newCert);

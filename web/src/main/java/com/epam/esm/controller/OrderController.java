@@ -34,14 +34,17 @@ public class OrderController {
     }
 
     @GetMapping()
-    public List<OrderDto> index() {
-        List<Order> all = orderService.findAll();
+    public List<OrderDto> index(@RequestParam(defaultValue = "1") int page,
+                                @RequestParam(defaultValue = "7") int size) {
+        List<Order> all = orderService.findAll(page, size);
         return orderConvertor.entityToDto(all);
     }
 
     @GetMapping("/user/{id}")
-    public List<OrderDto> userOrders(@PathVariable int id) {
-        List<Order> byUserId = orderService.findByUserId(id);
+    public List<OrderDto> userOrders(@PathVariable int id,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "7") int size) {
+        List<Order> byUserId = orderService.findByUserId(id, page, size);
         return orderConvertor.entityToDto(byUserId);
     }
 }

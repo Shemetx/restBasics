@@ -7,11 +7,11 @@ import java.util.List;
 public interface GiftCertificateService {
     void delete(Integer id);
     GiftCertificate save(GiftCertificate giftCertificate);
-    List<GiftCertificate> findAll();
-    List<GiftCertificate> getSortedList(String sortType,String sortBy);
+    List<GiftCertificate> findAll(int page,int size);
+    List<GiftCertificate> getSortedList(String sortType,String sortBy,int page,int size);
     GiftCertificate findById(Integer id);
-    List<GiftCertificate> findByPartOfName(String name);
-    List<GiftCertificate> findByPartOfDescription(String description);
-    List<GiftCertificate> findAllByTags(List<String> tags);
+    List<GiftCertificate> findByPartOfName(String name,int page,int size);
+    List<GiftCertificate> findByPartOfDescription(String description,int page,int size);
+    List<GiftCertificate> findAllByTags(List<String> tags,int page,int size);
     GiftCertificate update(GiftCertificate giftCertificate);
 }

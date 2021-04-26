@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public interface TagDao {
-    List<Tag> findAll();
+    List<Tag> findAll(int page,int size);
     Tag findByName(String name);
     Tag findById(Integer id);
     void save(Tag tag);
