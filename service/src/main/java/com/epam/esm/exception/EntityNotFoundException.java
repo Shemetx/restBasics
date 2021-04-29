@@ -7,11 +7,6 @@ public class EntityNotFoundException extends RuntimeException {
 
     private String message;
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
     /**
      * Constructor
      *
@@ -20,6 +15,11 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(String message) {
 
         this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 
 }

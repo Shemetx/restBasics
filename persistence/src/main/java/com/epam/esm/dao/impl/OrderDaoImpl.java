@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * Implementation of OrderDao
+ */
 @Component
 public class OrderDaoImpl implements OrderDao {
 
@@ -23,19 +26,24 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findAll(int page,int size) {
-        return entityManager.createQuery(SELECT_ORDER,Order.class)
+    public List<Order> findAll(int page, int size) {
+        return entityManager.createQuery(SELECT_ORDER, Order.class)
                 .setFirstResult(page)
                 .setMaxResults(size)
                 .getResultList();
     }
 
     @Override
-    public List<Order> findByUserId(int id,int page,int size) {
-        return entityManager.createQuery(FIND_BY_USER_ID,Order.class).setParameter(1, id)
+    public List<Order> findByUserId(int id, int page, int size) {
+        return entityManager.createQuery(FIND_BY_USER_ID, Order.class).setParameter(1, id)
                 .setFirstResult(page)
                 .setMaxResults(size)
                 .getResultList();
+    }
+
+    @Override
+    public Order findById(int id) {
+        return entityManager.find(Order.class, id);
     }
 
 

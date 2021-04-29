@@ -1,9 +1,12 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.convertor.TagConvertor;
 import com.epam.esm.domain.Tag;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.impl.TagServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +14,32 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+
+/**
+ * Catches users requests by mapping /tags
+ */
 @RestController
 @RequestMapping("/tags")
 public class TagsController {
 
     private TagService tagService;
+    private TagConvertor convertor;
 
+    /**
+     * Sets convertor.
+     *
+     * @param convertor the convertor
+     */
+    @Autowired
+    public void setConvertor(TagConvertor convertor) {
+        this.convertor = convertor;
+    }
+
+    /**
+     * Sets tag service.
+     *
+     * @param tagService the tag service
+     */
     @Autowired
     public void setTagService(TagServiceImpl tagService) {
         this.tagService = tagService;
@@ -25,12 +48,15 @@ public class TagsController {
     /**
      * Return all tags to client
      *
-     * @return the list
+     * @param page the page
+     * @param size the size
+     * @return the list of all tags
      */
     @GetMapping()
-    public List<Tag> index( @RequestParam(defaultValue = "1") int page,
-                            @RequestParam(defaultValue = "7") int size) {
-        return tagService.findAll(page,size);
+    public CollectionModel<TagDto> index(@RequestParam(defaultValue = "1") int page,
+                                         @RequestParam(defaultValue = "7") int size) {
+        List<Tag> all = tagService.findAll(page, size);
+        return convertor.toCollectionModel(all);
     }
 
     /**
@@ -40,8 +66,9 @@ public class TagsController {
      * @return the tag
      */
     @GetMapping(value = "/{id}")
-    public Tag show(@PathVariable("id") int id) {
-        return tagService.findById(id);
+    public TagDto show(@PathVariable("id") int id) {
+        Tag byId = tagService.findById(id);
+        return convertor.toModel(byId);
     }
 
 
@@ -52,8 +79,9 @@ public class TagsController {
      * @return list of all tags
      */
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody Tag tag) {
-        Tag save = tagService.save(tag);
+    public ResponseEntity<?> create(@Valid @RequestBody TagDto tag) {
+        Tag tag1 = convertor.dtoToEntity(tag);
+        Tag save = tagService.save(tag1);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
@@ -61,7 +89,7 @@ public class TagsController {
      * Deleting tag by his id
      *
      * @param id the id
-     * @return list of all tags
+     * @return blank page
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
@@ -69,8 +97,14 @@ public class TagsController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Find most used tag.
+     *
+     * @return the response entity
+     */
     @GetMapping("/popular")
-    public Tag findMostUsed() {
-        return tagService.findMostUsed();
+    public ResponseEntity<TagDto> findMostUsed() {
+        Tag mostUsed = tagService.findMostUsed();
+        return new ResponseEntity<>(convertor.toModel(mostUsed), HttpStatus.ACCEPTED);
     }
 }

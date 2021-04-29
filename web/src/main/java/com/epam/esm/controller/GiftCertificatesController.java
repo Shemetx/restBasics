@@ -6,6 +6,7 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.impl.GiftCertificateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Catches users requests by mapping /certificates
+ */
 @RestController
 @RequestMapping("/certificates")
 public class GiftCertificatesController {
@@ -21,13 +25,18 @@ public class GiftCertificatesController {
 
     private GiftCertificateConvertor convertor;
 
+    /**
+     * Sets gift certificate service.
+     *
+     * @param giftCertificateService the gift certificate service
+     */
     @Autowired
     public void setGiftCertificateService(GiftCertificateServiceImpl giftCertificateService) {
         this.giftCertificateService = giftCertificateService;
     }
 
     /**
-     * Sets convertor.
+     * Sets dto convertor.
      *
      * @param giftCertificateConvertor the gift certificate convertor
      */
@@ -36,19 +45,28 @@ public class GiftCertificatesController {
         this.convertor = giftCertificateConvertor;
     }
 
+    /**
+     * Return all certificates
+     *
+     * @param sortType the sort type
+     * @param sortBy   the sort by
+     * @param page     the page
+     * @param size     the size
+     * @return the list of all tags
+     */
     @GetMapping()
-    public List<GiftCertificateDto> index(@RequestParam(required = false) String sortType,
-                                          @RequestParam(required = false) String sortBy,
-                                          @RequestParam(defaultValue = "1") int page,
-                                          @RequestParam(defaultValue = "7") int size) {
+    public CollectionModel<GiftCertificateDto> index(@RequestParam(required = false) String sortType,
+                                                     @RequestParam(required = false) String sortBy,
+                                                     @RequestParam(defaultValue = "1") int page,
+                                                     @RequestParam(defaultValue = "7") int size) {
 
         List<GiftCertificate> dtoList;
         if (sortType != null && sortBy != null) {
-            dtoList = giftCertificateService.getSortedList(sortType, sortBy,page,size);
+            dtoList = giftCertificateService.getSortedList(sortType, sortBy, page, size);
         } else {
-            dtoList = giftCertificateService.findAll(page,size);
+            dtoList = giftCertificateService.findAll(page, size);
         }
-        return convertor.entityToDto(dtoList);
+        return convertor.toCollectionModel(dtoList);
     }
 
     /**
@@ -60,10 +78,12 @@ public class GiftCertificatesController {
     @GetMapping("/{id}")
     public GiftCertificateDto show(@PathVariable("id") int id) {
         GiftCertificate certificate = giftCertificateService.findById(id);
-        return convertor.entityToDto(certificate);
+        return convertor.toModel(certificate);
     }
 
     /**
+     * Create a new certificate.
+     *
      * @param dto the dto
      * @return the gift certificate dto
      */
@@ -71,7 +91,7 @@ public class GiftCertificatesController {
     public ResponseEntity<GiftCertificateDto> create(@Valid @RequestBody GiftCertificateDto dto) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         GiftCertificate save = giftCertificateService.save(giftCertificate);
-        return new ResponseEntity<>(convertor.entityToDto(save), HttpStatus.CREATED);
+        return new ResponseEntity<>(convertor.toModel(save), HttpStatus.CREATED);
     }
 
     /**
@@ -90,7 +110,7 @@ public class GiftCertificatesController {
     }
 
     /**
-     * Delete list.
+     * Delete certificate by id.
      *
      * @param id the id
      * @return the list
@@ -105,36 +125,48 @@ public class GiftCertificatesController {
      * Show all certificates that found by part of name
      *
      * @param name the name
+     * @param page the page
+     * @param size the size
      * @return the list
      */
     @GetMapping("/name/{name}")
-    public List<GiftCertificateDto> showByName(@PathVariable("name") String name, @RequestParam(defaultValue = "1") int page,
-                                               @RequestParam(defaultValue = "7") int size) {
-        List<GiftCertificate> byPartOfName = giftCertificateService.findByPartOfName(name,page,size);
-        return convertor.entityToDto(byPartOfName);
+    public CollectionModel<GiftCertificateDto> showByName(@PathVariable("name") String name, @RequestParam(defaultValue = "1") int page,
+                                                          @RequestParam(defaultValue = "7") int size) {
+        List<GiftCertificate> byPartOfName = giftCertificateService.findByPartOfName(name, page, size);
+        return convertor.toCollectionModel(byPartOfName);
     }
 
     /**
      * Show all certificates that found by part of description
      *
      * @param description the description
+     * @param page        the page
+     * @param size        the size
      * @return the list
      */
     @GetMapping("/description/{description}")
-    public List<GiftCertificateDto> showByDescription(@PathVariable("description") String description,
-                                                      @RequestParam(defaultValue = "1") int page,
-                                                      @RequestParam(defaultValue = "7") int size) {
-        List<GiftCertificate> byPartOfDescr = giftCertificateService.findByPartOfDescription(description,page,size);
-        return convertor.entityToDto(byPartOfDescr);
+    public CollectionModel<GiftCertificateDto> showByDescription(@PathVariable("description") String description,
+                                                                 @RequestParam(defaultValue = "1") int page,
+                                                                 @RequestParam(defaultValue = "7") int size) {
+        List<GiftCertificate> byPartOfDescr = giftCertificateService.findByPartOfDescription(description, page, size);
+        return convertor.toCollectionModel(byPartOfDescr);
     }
 
 
+    /**
+     * Show all certificates that have requested tags.
+     *
+     * @param tags the tags
+     * @param page the page
+     * @param size the size
+     * @return the collection model
+     */
     @GetMapping("/tag")
-    public List<GiftCertificateDto> showByTag(@RequestParam(value = "name") List<String> tags,
-                                              @RequestParam(defaultValue = "1") int page,
-                                              @RequestParam(defaultValue = "7") int size) {
-        List<GiftCertificate> certificateList = giftCertificateService.findAllByTags(tags,page,size);
-        return convertor.entityToDto(certificateList);
+    public CollectionModel<GiftCertificateDto> showByTag(@RequestParam(value = "name") List<String> tags,
+                                                         @RequestParam(defaultValue = "1") int page,
+                                                         @RequestParam(defaultValue = "7") int size) {
+        List<GiftCertificate> certificateList = giftCertificateService.findAllByTags(tags, page, size);
+        return convertor.toCollectionModel(certificateList);
     }
 
 

@@ -2,10 +2,11 @@ package com.epam.esm.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 
+/**
+ * The type Tag.
+ */
 @Entity
 @Table(name = "tag")
 public class Tag {
@@ -13,30 +14,58 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Size(min= 3,max = 16,message = "Tag name should be between 3 and 16 characters")
     @Column(name = "name", unique = true)
     private String name;
 
+    /**
+     * Instantiates a new Tag.
+     */
     public Tag() {
     }
 
+    /**
+     * Instantiates a new Tag.
+     *
+     * @param id   the id
+     * @param name the name
+     */
     public Tag(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

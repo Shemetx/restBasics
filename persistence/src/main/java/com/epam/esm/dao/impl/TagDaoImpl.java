@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ * Implementation of TagDao
+ */
 @Component
 public class TagDaoImpl implements TagDao {
 
@@ -59,8 +59,8 @@ public class TagDaoImpl implements TagDao {
 
 
     @Override
-    public void save(Tag tag) {
-        entityManager.persist(tag);
+    public Tag save(Tag tag) {
+        return entityManager.merge(tag);
     }
 
 
@@ -81,10 +81,4 @@ public class TagDaoImpl implements TagDao {
         return (Integer) singleResult;
     }
 
-    private CriteriaQuery<Tag> getCriteria() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
-        Root<Tag> from = criteriaQuery.from(Tag.class);
-        return criteriaQuery.select(from);
-    }
 }

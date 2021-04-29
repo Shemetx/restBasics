@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.persistence.NoResultException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -54,7 +56,7 @@ public class TagServiceImplTest {
     }
     @Test
     public void findByNameNegative() {
-        when(tagsDaoImpl.findByName(tagTest.getName())).thenReturn(null);
+        when(tagsDaoImpl.findByName(tagTest.getName())).thenThrow(new NoResultException());
         assertThrows(EntityNotFoundException.class,() -> {
             tagServiceImpl.findByName(tagTest.getName());
         });

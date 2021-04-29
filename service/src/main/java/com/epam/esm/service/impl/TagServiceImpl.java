@@ -12,27 +12,42 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
+/**
+ * Implementation of TagService
+ */
 @Component
 public class TagServiceImpl implements TagService {
 
     private TagDao tagDao;
     private PageUtil pageUtil;
 
+    /**
+     * Sets page util.
+     *
+     * @param pageUtil the page util
+     */
     @Autowired
     public void setPageUtil(PageUtil pageUtil) {
         this.pageUtil = pageUtil;
     }
+
+    /**
+     * Sets tag dao.
+     *
+     * @param tagDao the tag dao
+     */
     @Autowired
     public void setTagDao(TagDaoImpl tagDao) {
         this.tagDao = tagDao;
     }
 
     @Override
-    public List<Tag> findAll(int page,int size) {
-        page = pageUtil.getCorrectPage(page,size);
-        return tagDao.findAll(page,size);
+    public List<Tag> findAll(int page, int size) {
+        page = pageUtil.getCorrectPage(page, size);
+        return tagDao.findAll(page, size);
     }
 
     @Override
@@ -51,7 +66,6 @@ public class TagServiceImpl implements TagService {
             byName = tagDao.findByName(name);
         } catch (NoResultException e) {
             throw new EntityNotFoundException("Tag with name: '" + name + "' not found");
-
         }
         return byName;
     }
@@ -59,13 +73,13 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public Tag save(Tag tag) {
+        Tag save;
         try {
-            tagDao.save(tag);
-        } catch (
-                Exception e) {
+            save = tagDao.save(tag);
+        } catch (PersistenceException e) {
             throw new EntityAlreadyExistsException("Tag with name: '" + tag.getName() + "' already exists");
         }
-        return tag;
+        return save;
     }
 
     @Transactional

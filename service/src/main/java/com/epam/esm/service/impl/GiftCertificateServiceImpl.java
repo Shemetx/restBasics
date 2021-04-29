@@ -11,31 +11,48 @@ import com.epam.esm.service.TagService;
 import com.epam.esm.util.PageUtil;
 import com.epam.esm.util.SortingTypes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import javax.persistence.PersistenceException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of GiftCertificateService
+ */
 @Component
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private GiftCertificateDao giftCertificateDao;
     private TagService tagService;
     private PageUtil pageUtil;
 
+    /**
+     * Sets page util.
+     *
+     * @param pageUtil the page util
+     */
     @Autowired
     public void setPageUtil(PageUtil pageUtil) {
         this.pageUtil = pageUtil;
     }
 
+    /**
+     * Sets gift certificate dao.
+     *
+     * @param giftCertificateDao the gift certificate dao
+     */
     @Autowired
     public void setGiftCertificateDao(GiftCertificateDaoImpl giftCertificateDao) {
         this.giftCertificateDao = giftCertificateDao;
     }
 
+    /**
+     * Sets tag service.
+     *
+     * @param tagService the tag service
+     */
     @Autowired
     public void setTagService(TagServiceImpl tagService) {
         this.tagService = tagService;
@@ -51,13 +68,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public GiftCertificate save(GiftCertificate giftCertificate) {
-        giftCertificate.setCreateDate(LocalDateTime.now());
-        giftCertificate.setLastUpdateDate(LocalDateTime.now());
         GiftCertificate save;
         try {
             save = giftCertificateDao.save(giftCertificate);
-        } catch (
-                DataIntegrityViolationException e) {
+        } catch (PersistenceException exception) {
             throw new EntityAlreadyExistsException("Gift certificate with name: '" + giftCertificate.getName() + "' already exists");
         }
         return save;
@@ -135,10 +149,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Transactional
     @Override
-    public GiftCertificate update(GiftCertificate giftCertificate) {
-        giftCertificate.setLastUpdateDate(LocalDateTime.now());
+    public void update(GiftCertificate giftCertificate) {
         giftCertificateDao.update(findById(giftCertificate.getId()), giftCertificate);
-        return null;
     }
 
 
