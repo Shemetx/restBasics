@@ -1,5 +1,7 @@
 package com.epam.esm;
 
+
+import com.epam.esm.conf.DaoTestConfig;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.domain.GiftCertificate;
@@ -10,15 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("dev")
 public class GiftCertificateDaoImplTest {
 
