@@ -16,7 +16,7 @@ public class TagDaoImpl implements TagDao {
 
     private static final String SELECT_TAG = "select t from Tag t ";
     private static final String FIND_BY_NAME = SELECT_TAG + " where t.name = ?1 ";
-    private static final String FIND_USER_MAX_COST = "select u.id from (select e.id,sum(w.cost) maxCost\n" +
+    private static final String FIND_USER_WITH_MAX_COST = "select u.id from (select e.id,sum(w.cost) maxCost\n" +
             "    from user e\n" +
             "    join user_order w on e.id = w.user_id\n" +
             "    group by e.id\n" +
@@ -77,7 +77,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     private Integer findMaxCostUser() {
-        Object singleResult = entityManager.createNativeQuery(FIND_USER_MAX_COST).getSingleResult();
+        Object singleResult = entityManager.createNativeQuery(FIND_USER_WITH_MAX_COST).getSingleResult();
         return (Integer) singleResult;
     }
 
