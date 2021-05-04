@@ -12,13 +12,12 @@ import java.time.LocalDateTime;
 public class CertificateAuditListener {
 
     /**
-     * Calls before save certificate entity
+     * Calls before create certificate entity
      *
-     * @param object certificate entity
+     * @param certificate entity
      */
     @PrePersist
-    private void beforeCreate(Object object) {
-        GiftCertificate certificate = (GiftCertificate) object;
+    private void beforeCreate(GiftCertificate certificate) {
         certificate.setLastUpdateDate(LocalDateTime.now());
         certificate.setCreateDate(LocalDateTime.now());
     }
@@ -26,11 +25,10 @@ public class CertificateAuditListener {
     /**
      * Calls before update certificate entity
      *
-     * @param object certificate entity
+     * @param certificate entity
      */
     @PreUpdate
-    private void beforeUpdate(Object object) {
-        GiftCertificate certificate = (GiftCertificate) object;
+    private void beforeUpdate(GiftCertificate certificate) {
         certificate.setLastUpdateDate(LocalDateTime.now());
     }
 }

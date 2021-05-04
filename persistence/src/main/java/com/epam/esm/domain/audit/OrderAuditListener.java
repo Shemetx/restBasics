@@ -13,11 +13,10 @@ public class OrderAuditListener {
     /**
      * Calls before save order entity
      *
-     * @param object order entity
+     * @param order order entity
      */
     @PrePersist
-    private void beforeCreate(Object object) {
-        Order order = (Order) object;
+    private void beforeCreate(Order order) {
         order.setPurchaseTime(LocalDateTime.now());
     }
 }

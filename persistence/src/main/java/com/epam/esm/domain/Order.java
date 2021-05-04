@@ -4,6 +4,7 @@ package com.epam.esm.domain;
 import com.epam.esm.domain.audit.OrderAuditListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "cost", updatable = false)
-    private float cost;
+    private BigDecimal cost;
     @Column(name = "purchase_time", updatable = false)
     private LocalDateTime purchaseTime;
 
@@ -48,7 +49,7 @@ public class Order {
      * @param cost         the cost
      * @param purchaseTime the purchase time
      */
-    public Order(Integer id, float cost, LocalDateTime purchaseTime) {
+    public Order(Integer id, BigDecimal cost, LocalDateTime purchaseTime) {
         this.id = id;
         this.cost = cost;
         this.purchaseTime = purchaseTime;
@@ -77,7 +78,7 @@ public class Order {
      *
      * @return the cost
      */
-    public float getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
@@ -86,7 +87,7 @@ public class Order {
      *
      * @param cost the cost
      */
-    public void setCost(float cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 

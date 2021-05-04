@@ -4,6 +4,7 @@ import com.epam.esm.domain.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
 public class OrderDto extends RepresentationModel<OrderDto> {
 
     private int id;
-    private float cost;
+    private BigDecimal cost;
     @JsonFormat(
             shape = JsonFormat.Shape.STRING,
             pattern = "yyyy-MM-dd hh:mm:ss")
@@ -51,7 +52,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
      *
      * @return the cost
      */
-    public float getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
@@ -60,7 +61,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
      *
      * @param cost the cost
      */
-    public void setCost(float cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
