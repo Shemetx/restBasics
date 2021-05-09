@@ -23,8 +23,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String ORDER_BY_DATE_DESC = SELECT_GIFT_CERTIFICATE + " order by g.createDate desc";
     private static final String FIND_BY_PART_OF_NAME = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.name) >= 1  ";
     private static final String FIND_BY_PART_OF_DESCRIPTION = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.description) >= 1";
-    private static final String FIND_BY_TAG_ID = "select * from gift_certificate\n" +
-            "join certificates_tags ct on gift_certificate.id = ct.cert_id\n" +
+    private static final String FIND_BY_TAG_ID = "select * from gift_certificate gc\n" +
             "where ";
 
     @PersistenceContext
@@ -95,12 +94,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private StringBuilder getDynamicFindByTags(List<Tag> tags) {
         StringBuilder result = new StringBuilder(FIND_BY_TAG_ID);
         for (int i = 0; i < tags.size(); i++) {
-            result.append("?").append(i + 1).append(" ");
+            result.append("exists(select * from certificates_tags c where cert_id = gc.id and tag_id = ?")
+                    .append(i + 1).append(") ");
             if (i < tags.size() - 1) {
                 result.append("and ");
             }
         }
-        result.append("in (ct.tag_id)");
         return result;
     }
 

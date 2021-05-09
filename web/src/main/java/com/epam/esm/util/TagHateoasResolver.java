@@ -19,9 +19,6 @@ public class TagHateoasResolver implements HateoasModelLinker<TagDto> {
         resource.add(linkTo(methodOn(TagsController.class)
                 .show(resource.getId()))
                 .withSelfRel());
-        resource.add(linkTo(methodOn(TagsController.class)
-                .delete(resource.getId()))
-                .withRel("delete"));
     }
 
     @Override

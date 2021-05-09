@@ -12,5 +12,6 @@ subprojects {
         implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
         implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.8.1'
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.5'
+        implementation 'junit:junit:4.13.1'
     }
 }

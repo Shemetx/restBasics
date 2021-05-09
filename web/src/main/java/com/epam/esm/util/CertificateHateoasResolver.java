@@ -20,9 +20,6 @@ public class CertificateHateoasResolver implements HateoasModelLinker<GiftCertif
                 .show(resource.getId()))
                 .withSelfRel());
 
-        resource.add(linkTo(methodOn(GiftCertificatesController.class)
-                .delete(resource.getId()))
-                .withRel("delete"));
     }
 
 
