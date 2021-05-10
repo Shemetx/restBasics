@@ -7,6 +7,7 @@ VALUES(2,'testNameSecond','testDescriptionSecond',24,'2001-10-10 12:12:12','2001
 insert into tag(id,name) VALUES (1,'testTagFirst');
 insert into tag(id,name) VALUES (2,'testTagSecond');
 insert into tag(id,name) VALUES (3,'testTagThird');
+insert into tag(id,name) VALUES (33,'testDeleteTest');
 
 insert into certificates_tags(cert_id, tag_id) VALUES(1,1);
 insert into certificates_tags(cert_id, tag_id) VALUES(1,2);
