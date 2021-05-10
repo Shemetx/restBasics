@@ -130,8 +130,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     /**
      * Updates only fields passes with request
      */
-    public void update(GiftCertificate oldCert, GiftCertificate newCert) {
-        GiftCertificate merge = entityManager.merge(oldCert);
+    public void update(GiftCertificate newCert) {
+        GiftCertificate merge = entityManager.find(GiftCertificate.class,newCert.getId());
         if (newCert.getName() != null) {
             merge.setName(newCert.getName());
         }

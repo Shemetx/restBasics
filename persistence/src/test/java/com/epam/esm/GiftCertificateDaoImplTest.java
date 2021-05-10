@@ -89,7 +89,7 @@ public class GiftCertificateDaoImplTest {
         Float priceBefore = beforeUpdate.getPrice();
         GiftCertificate toUpdate = dao.findById(1);
         toUpdate.setPrice(16.76f);
-        dao.update(beforeUpdate, toUpdate);
+        dao.update(toUpdate);
         assertNotEquals(priceBefore, toUpdate.getPrice());
     }
 

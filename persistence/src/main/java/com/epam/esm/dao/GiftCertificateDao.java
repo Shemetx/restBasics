@@ -103,10 +103,9 @@ public interface GiftCertificateDao {
     /**
      * Update.
      *
-     * @param oldCert the old cert
      * @param newCert the new cert
      */
-    void update(GiftCertificate oldCert, GiftCertificate newCert);
+    void update(GiftCertificate newCert);
 
     /**
      * Find by id gift certificate.

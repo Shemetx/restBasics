@@ -150,7 +150,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public void update(GiftCertificate giftCertificate) {
-        giftCertificateDao.update(findById(giftCertificate.getId()), giftCertificate);
+        giftCertificateDao.update(giftCertificate);
     }
 
 
