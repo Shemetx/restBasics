@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +26,12 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
     private GiftCertificateService certificateService;
     private PageUtil pageUtil;
+    private UserServiceImpl userService;
+
+    @Autowired
+    public void setUserService(UserServiceImpl userService) {
+        this.userService = userService;
+    }
 
     /**
      * Sets page util.
@@ -61,11 +66,12 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order save(Order order) {
+        userService.findById(order.getCustomer().getId());
         Set<GiftCertificate> certificates = order.getCertificates();
         Set<GiftCertificate> certificateSet = certificateIdToEntity(certificates);
         double collect = certificateSet.stream().mapToDouble(GiftCertificate::getPrice).sum();
         order.setCertificates(certificateSet);
-        order.setCost(BigDecimal.valueOf(collect).setScale(3,BigDecimal.ROUND_DOWN));
+        order.setCost(BigDecimal.valueOf(collect).setScale(3, BigDecimal.ROUND_DOWN));
         return orderDao.save(order);
     }
 
