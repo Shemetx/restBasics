@@ -89,7 +89,7 @@ public class GiftCertificatesController {
      */
     @PostMapping()
     public ResponseEntity<GiftCertificateDto> create(@Valid @RequestBody GiftCertificateDto dto) {
-        if(dto.isEmpty()){
+        if(dto.areFieldsNull()){
             throw new IllegalArgumentException("Check body input. Fields must not be null");
         }
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);

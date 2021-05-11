@@ -25,6 +25,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String FIND_BY_PART_OF_DESCRIPTION = SELECT_GIFT_CERTIFICATE + " where locate(?1,g.description) >= 1";
     private static final String FIND_BY_TAG_ID = "select * from gift_certificate gc\n" +
             "where ";
+    private static final String CERTIFICATE_EXISTS_BY_TAG = "exists(select * from certificates_tags c where cert_id = gc.id and tag_id = ?";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -94,7 +95,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private StringBuilder getDynamicFindByTags(List<Tag> tags) {
         StringBuilder result = new StringBuilder(FIND_BY_TAG_ID);
         for (int i = 0; i < tags.size(); i++) {
-            result.append("exists(select * from certificates_tags c where cert_id = gc.id and tag_id = ?")
+            result.append(CERTIFICATE_EXISTS_BY_TAG)
                     .append(i + 1).append(") ");
             if (i < tags.size() - 1) {
                 result.append("and ");

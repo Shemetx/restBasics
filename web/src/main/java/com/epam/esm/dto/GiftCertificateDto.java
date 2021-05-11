@@ -194,7 +194,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
      * Checks fields on null
      *
      */
-    public boolean isEmpty() {
+    public boolean areFieldsNull() {
         return (this.name == null || this.description == null
                 || this.price == null || this.duration == null);
     }

@@ -66,10 +66,15 @@ public class OrderServiceImpl implements OrderService {
         double collect = certificateSet.stream().mapToDouble(GiftCertificate::getPrice).sum();
         order.setCertificates(certificateSet);
         order.setCost(BigDecimal.valueOf(collect).setScale(3,BigDecimal.ROUND_DOWN));
-        order.setPurchaseTime(LocalDateTime.now());
         return orderDao.save(order);
     }
 
+    /**
+     * Transform id's into entities
+     *
+     * @param certificates Set оf certificates filled with id's
+     * @return set of certificates
+     */
     private Set<GiftCertificate> certificateIdToEntity(Set<GiftCertificate> certificates) {
         return certificates.stream().map(temp -> certificateService.findById(temp.getId()))
                 .collect(Collectors.toSet());
