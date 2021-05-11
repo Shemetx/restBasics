@@ -78,7 +78,7 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public Error wrongUrlParameters(MethodArgumentTypeMismatchException ex) {
-        return new Error(422, "Bad request check input entities");
+        return new Error(422, "Bad request check input");
     }
 
     /**

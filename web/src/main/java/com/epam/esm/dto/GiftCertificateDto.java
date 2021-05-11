@@ -189,4 +189,13 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     public int hashCode() {
         return Objects.hash(id, name, description, price, duration, createDate);
     }
+
+    /**
+     * Checks fields on null
+     *
+     */
+    public boolean isEmpty() {
+        return (this.name == null || this.description == null
+                || this.price == null || this.duration == null);
+    }
 }
