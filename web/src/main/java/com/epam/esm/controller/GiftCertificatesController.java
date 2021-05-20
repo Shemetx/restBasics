@@ -87,7 +87,7 @@ public class GiftCertificatesController {
      * @param dto the dto
      * @return the gift certificate dto
      */
-    @PostMapping()
+    @PostMapping("/admin")
     public ResponseEntity<GiftCertificateDto> create(@Valid @RequestBody GiftCertificateDto dto) {
         if(dto.areFieldsNull()){
             throw new IllegalArgumentException("Check body input. Fields must not be null");
@@ -104,7 +104,7 @@ public class GiftCertificatesController {
      * @param id  the id
      * @return the gift certificate dto
      */
-    @PatchMapping("/{id}")
+    @PatchMapping("/admin/{id}")
     public GiftCertificateDto update(@Valid @RequestBody GiftCertificateDto dto, @PathVariable("id") int id) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         giftCertificate.setId(id);
@@ -118,7 +118,7 @@ public class GiftCertificatesController {
      * @param id the id
      * @return the list
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         giftCertificateService.delete(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);

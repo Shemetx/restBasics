@@ -3,7 +3,7 @@ package com.epam.esm.convertor;
 import com.epam.esm.domain.Order;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.OrderDto;
-import com.epam.esm.util.HateoasModelLinker;
+import com.epam.esm.hateoas.HateoasModelLinker;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;

@@ -13,4 +13,8 @@ public interface UserService {
      * @return the user
      */
     User findById(Integer id);
+
+    User signUp(User user);
+
+    User findByUsername(String username);
 }

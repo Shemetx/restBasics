@@ -1,4 +1,4 @@
-package com.epam.esm.util;
+package com.epam.esm.hateoas;
 
 import org.springframework.hateoas.CollectionModel;
 

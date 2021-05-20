@@ -1,3 +1,4 @@
+/*
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.UserDao;
@@ -7,9 +8,11 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+*/
 /**
  * Implementation of UserDao
- */
+ *//*
+
 @Component
 public class UserDaoImpl implements UserDao {
 
@@ -21,3 +24,4 @@ public class UserDaoImpl implements UserDao {
         return entityManager.find(User.class, id);
     }
 }
+*/

@@ -2,7 +2,7 @@ package com.epam.esm.convertor;
 
 import com.epam.esm.domain.Tag;
 import com.epam.esm.dto.TagDto;
-import com.epam.esm.util.TagHateoasResolver;
+import com.epam.esm.hateoas.TagHateoasResolver;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;

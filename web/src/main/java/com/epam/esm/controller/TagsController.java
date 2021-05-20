@@ -78,7 +78,7 @@ public class TagsController {
      * @param tag the tag
      * @return list of all tags
      */
-    @PostMapping()
+    @PostMapping("/admin")
     public ResponseEntity<?> create(@Valid @RequestBody TagDto tag) {
         Tag tag1 = convertor.dtoToEntity(tag);
         Tag save = tagService.save(tag1);
@@ -91,7 +91,7 @@ public class TagsController {
      * @param id the id
      * @return blank page
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         tagService.delete(id);
         return ResponseEntity.noContent().build();
