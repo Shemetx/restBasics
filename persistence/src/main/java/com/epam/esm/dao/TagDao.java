@@ -1,58 +1,27 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.domain.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Optional;
 
+public interface TagDao extends JpaRepository<Tag, Integer> {
+    Page<Tag> findAll(Pageable pageable);
+    Optional<Tag> findByName(String name);
+    Optional<Tag> findById(Integer id);
 
-/**
- * The interface Tag dao.
- */
-public interface TagDao {
-    /**
-     * Find all tags.
-     *
-     * @param page the page
-     * @param size the size
-     * @return the list of all tags
-     */
-    List<Tag> findAll(int page, int size);
-
-    /**
-     * Find by name tag.
-     *
-     * @param name the name
-     * @return the tag
-     */
-    Tag findByName(String name);
-
-    /**
-     * Find by id tag.
-     *
-     * @param id the id
-     * @return the tag
-     */
-    Tag findById(Integer id);
-
-    /**
-     * Save tag.
-     *
-     * @param tag the tag
-     * @return the tag
-     */
-    Tag save(Tag tag);
-
-    /**
-     * Delete.
-     *
-     * @param tag the tag
-     */
-    void delete(Tag tag);
-
-    /**
-     * Find most used tag.
-     *
-     * @return the tag
-     */
-    Tag findMostUsed();
+    @Query(value = "select *\n" +
+            "from tag\n" +
+            "where id = (select tag_id\n" +
+            "            from certificates_tags gc\n" +
+            "                     join order_items oi on gc.cert_id = oi.item_id\n" +
+            "                     join user_order uo on oi.order_id = uo.id\n" +
+            "            where uo.user_id = ?1\n" +
+            "            group by tag_id\n" +
+            "            order by count(*) desc\n" +
+            "            limit 1);",nativeQuery = true)
+    Optional<Tag> findMostUsed(Integer userId);
 }

@@ -3,42 +3,46 @@ package com.epam.esm;
 
 import com.epam.esm.conf.DaoTestConfig;
 import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("dev")
-public class GiftCertificateDaoImplTest {
+public class GiftCertificateDaoTest {
 
     private GiftCertificateDao dao;
+    private int page = 0;
+    private int size = 7;
 
     @Autowired
-    public void setDao(GiftCertificateDaoImpl dao) {
+    public void setDao(GiftCertificateDao dao) {
         this.dao = dao;
     }
 
     @Test
     public void findAllTest() {
-        List<GiftCertificate> index = dao.findAll(1, 7);
+        Page<GiftCertificate> index = dao.findAll(PageRequest.of(page,size));
         assertFalse(index.isEmpty());
     }
 
     @Test
     public void findByIdTest() {
-        GiftCertificate byTagId = dao.findById(1);
-        assertEquals("testNameFirst", byTagId.getName());
+        Optional<GiftCertificate> byTagId = dao.findById(1);
+        assertEquals("testNameFirst", byTagId.get().getName());
     }
 
     @Test
@@ -49,21 +53,21 @@ public class GiftCertificateDaoImplTest {
             add(first);
             add(second);
         }};
-        List<GiftCertificate> byTagId = dao.findByTags(tags, 0, 7);
-        assertEquals(2, byTagId.get(0).getId());
+        Page<GiftCertificate> byTagId = dao.findBySeveralTags(tags, PageRequest.of(page,size));
+        assertEquals(2, byTagId.getContent().get(0).getId());
     }
 
     @Test
     public void findByPartNameTest() {
-        List<GiftCertificate> first = dao.findByPartOfName("First", 0, 7);
-        GiftCertificate certificate = first.get(0);
+        Page<GiftCertificate> first = dao.findByNameContains("First", PageRequest.of(page,size));
+        GiftCertificate certificate = first.getContent().get(0);
         assertEquals(certificate.getName(), "testNameFirst");
     }
 
     @Test
     public void findByPartDescriptionTest() {
-        List<GiftCertificate> first = dao.findByPartOfDescription("First", 0, 7);
-        GiftCertificate certificate = first.get(0);
+        Page<GiftCertificate> first = dao.findByDescriptionContains("First", PageRequest.of(page,size));
+        GiftCertificate certificate = first.getContent().get(0);
         assertEquals(certificate.getDescription(), "testDescriptionFirst");
     }
 
@@ -85,12 +89,11 @@ public class GiftCertificateDaoImplTest {
     @Transactional
     @Test
     public void updateTest() {
-        GiftCertificate beforeUpdate = dao.findById(1);
-        Float priceBefore = beforeUpdate.getPrice();
-        GiftCertificate toUpdate = dao.findById(1);
-        toUpdate.setPrice(16.76f);
-        dao.update(toUpdate);
-        assertNotEquals(priceBefore, toUpdate.getPrice());
+        Optional<GiftCertificate> beforeUpdate = dao.findById(1);
+        Float priceBefore = beforeUpdate.get().getPrice();
+        Optional<GiftCertificate> toUpdate = dao.findById(1);
+        toUpdate.get().setPrice(16.76f);
+        assertNotEquals(priceBefore, toUpdate.get().getPrice());
     }
 
     @Transactional
@@ -105,9 +108,9 @@ public class GiftCertificateDaoImplTest {
         certificate.setLastUpdateDate(LocalDateTime.parse("2020-07-07T15:15:15"));
 
         GiftCertificate save = dao.save(certificate);
-        List<GiftCertificate> beforeDelete = dao.findAll(0, 7);
+        Page<GiftCertificate> beforeDelete = dao.findAll(PageRequest.of(page,size));
         dao.delete(save);
-        List<GiftCertificate> afterDelete = dao.findAll(0, 7);
-        assertNotEquals(beforeDelete.size(), afterDelete.size());
+        Page<GiftCertificate> afterDelete = dao.findAll(PageRequest.of(page,size));
+        assertNotEquals(beforeDelete.getTotalElements(), afterDelete.getTotalElements());
     }
 }

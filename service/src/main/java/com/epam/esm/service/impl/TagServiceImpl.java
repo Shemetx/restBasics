@@ -1,19 +1,17 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.TagDao;
-import com.epam.esm.dao.impl.TagDaoImpl;
+import com.epam.esm.dao.UserDao;
 import com.epam.esm.domain.Tag;
-import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.service.TagService;
-import com.epam.esm.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of TagService
@@ -21,65 +19,47 @@ import java.util.List;
 @Component
 public class TagServiceImpl implements TagService {
 
-    private TagDao tagDao;
-    private PageUtil pageUtil;
 
-    /**
-     * Sets page util.
-     *
-     * @param pageUtil the page util
-     */
+    private TagDao tagDao;
+    private UserDao userService;
+
     @Autowired
-    public void setPageUtil(PageUtil pageUtil) {
-        this.pageUtil = pageUtil;
+    public void setUserService(UserDao userService) {
+        this.userService = userService;
     }
 
-    /**
-     * Sets tag dao.
-     *
-     * @param tagDao the tag dao
-     */
     @Autowired
-    public void setTagDao(TagDaoImpl tagDao) {
+    public void setTagDataService(TagDao tagDao) {
         this.tagDao = tagDao;
     }
 
     @Override
-    public List<Tag> findAll(int page, int size) {
-        page = pageUtil.getCorrectPage(page, size);
-        return tagDao.findAll(page, size);
+    public Page<Tag> findAll(int page, int size) {
+        return tagDao.findAll(PageRequest.of(page,size));
     }
 
     @Override
     public Tag findById(Integer id) {
-        Tag byId = tagDao.findById(id);
-        if (byId == null) {
+        Optional<Tag> byId = tagDao.findById(id);
+        if (!byId.isPresent()) {
             throw new EntityNotFoundException("Tag with id: '" + id + "' not found");
         }
-        return byId;
+        return byId.get();
     }
 
     @Override
     public Tag findByName(String name) {
-        Tag byName;
-        try {
-            byName = tagDao.findByName(name);
-        } catch (NoResultException e) {
+        Optional<Tag> byName = tagDao.findByName(name);
+        if (!byName.isPresent()) {
             throw new EntityNotFoundException("Tag with name: '" + name + "' not found");
         }
-        return byName;
+        return byName.get();
     }
 
     @Transactional
     @Override
     public Tag save(Tag tag) {
-        Tag save;
-        try {
-            save = tagDao.save(tag);
-        } catch (PersistenceException e) {
-            throw new EntityAlreadyExistsException("Tag with name: '" + tag.getName() + "' already exists");
-        }
-        return save;
+        return tagDao.save(tag);
     }
 
     @Transactional
@@ -91,7 +71,8 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag findMostUsed() {
-        return tagDao.findMostUsed();
+        Integer userIdWithMaxCost = userService.findUserIdWithMaxCost();
+         return tagDao.findMostUsed(userIdWithMaxCost).get();
     }
 
 }

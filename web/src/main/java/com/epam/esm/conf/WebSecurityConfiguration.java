@@ -18,6 +18,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JwtTokenProvider jwtTokenProvider;
     private final static String ADMIN_ENDPOINT_CERTIFICATES = "/certificates/admin/**";
     private final static String ADMIN_ENDPOINT_TAGS = "/tags/admin/**";
+    private final static String ADMIN_ONE = "/certificates/admin";
+    private final static String ADMIN_SECOND = "/tags/admin";
     private final static String MAIN_CERTIFICATES = "/certificates";
     private final static String AUTH_ENDPOINT = "/auth/**";
 
@@ -41,7 +43,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_ENDPOINT,MAIN_CERTIFICATES).permitAll()
-                .antMatchers(ADMIN_ENDPOINT_TAGS,ADMIN_ENDPOINT_CERTIFICATES).hasRole("ADMIN")
+                .antMatchers(ADMIN_ONE,ADMIN_SECOND,
+                        ADMIN_ENDPOINT_TAGS,ADMIN_ENDPOINT_CERTIFICATES).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

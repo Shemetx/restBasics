@@ -1,58 +1,52 @@
 package com.epam.esm;
 
 import com.epam.esm.dao.OrderDao;
-import com.epam.esm.dao.impl.OrderDaoImpl;
 import com.epam.esm.domain.Order;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.impl.OrderServiceImpl;
-import com.epam.esm.util.PageUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class OrderServiceImplTest {
 
-    @InjectMocks
-    private OrderServiceImpl orderService;
-
-    @Mock
-    private OrderDaoImpl orderDao;
-
-    @Mock
-    private PageUtil pageUtil;
-
     final int page = 0;
     final int size = 7;
     final int id = 1;
+    @InjectMocks
+    private OrderServiceImpl orderService;
+    @Mock
+    private OrderDao orderDao;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        when(pageUtil.getCorrectPage(page,size)).thenReturn(0);
-
     }
 
     @Test
     public void findByIdPositive() {
         Order order = new Order();
-        when(orderDao.findById(id)).thenReturn(order);
+        when(orderDao.findById(id)).thenReturn(Optional.of(order));
         Order byId = orderService.findById(id);
         assertNotNull(byId);
     }
 
     @Test
     public void findByIdNegative() {
-        when(orderDao.findById(id)).thenReturn(null);
-        assertThrows(EntityNotFoundException.class,() -> {
+        when(orderDao.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> {
             orderService.findById(id);
         });
     }
@@ -63,15 +57,16 @@ public class OrderServiceImplTest {
         List<Order> orderList = new ArrayList<Order>() {{
             add(order);
         }};
-        when(orderDao.findByUserId(id,page,size)).thenReturn(orderList);
-        List<Order> byUserId = orderService.findByUserId(id, page, size);
+        Page<Order> pageOrders = new PageImpl<>(orderList);
+        when(orderDao.findByCustomerId(id, PageRequest.of(page,size))).thenReturn(pageOrders);
+        Page<Order> byUserId = orderService.findByUserId(id, page, size);
         assertFalse(byUserId.isEmpty());
     }
 
     @Test
     public void findByUserIdNegative() {
-        when(orderDao.findByUserId(id,page,size)).thenReturn(Collections.emptyList());
-        assertThrows(EntityNotFoundException.class,() -> {
+        when(orderDao.findByCustomerId(id, PageRequest.of(page,size))).thenReturn(Page.empty());
+        assertThrows(EntityNotFoundException.class, () -> {
             orderService.findByUserId(id, page, size);
         });
     }

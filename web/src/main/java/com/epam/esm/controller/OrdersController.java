@@ -6,6 +6,7 @@ import com.epam.esm.dto.OrderDto;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,7 @@ public class OrdersController {
     @GetMapping()
     public CollectionModel<OrderDto> index(@RequestParam(defaultValue = "1") int page,
                                            @RequestParam(defaultValue = "7") int size) {
-        List<Order> all = orderService.findAll(page, size);
+        Page<Order> all = orderService.findAll(page, size);
         return orderConvertor.toCollectionModel(all);
     }
 
@@ -79,7 +80,7 @@ public class OrdersController {
     public CollectionModel<OrderDto> userOrders(@PathVariable int id,
                                                 @RequestParam(defaultValue = "1") int page,
                                                 @RequestParam(defaultValue = "7") int size) {
-        List<Order> byUserId = orderService.findByUserId(id, page, size);
+        Page<Order> byUserId = orderService.findByUserId(id, page, size);
         return orderConvertor.toCollectionModel(byUserId);
     }
 

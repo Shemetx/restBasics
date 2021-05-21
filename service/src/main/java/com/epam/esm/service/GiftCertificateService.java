@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.domain.GiftCertificate;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface GiftCertificateService {
      * @param size the size
      * @return the list
      */
-    List<GiftCertificate> findAll(int page, int size);
+    Page<GiftCertificate> findAll(int page, int size);
 
     /**
      * Gets sorted certificates.
@@ -42,7 +43,7 @@ public interface GiftCertificateService {
      * @param size     the size
      * @return the sorted list
      */
-    List<GiftCertificate> getSortedList(String sortType, String sortBy, int page, int size);
+    Page<GiftCertificate> getSortedList(String sortType, String sortBy, int page, int size);
 
     /**
      * Find by id gift certificate.
@@ -60,7 +61,7 @@ public interface GiftCertificateService {
      * @param size the size
      * @return the list
      */
-    List<GiftCertificate> findByPartOfName(String name, int page, int size);
+    Page<GiftCertificate> findByPartOfName(String name, int page, int size);
 
     /**
      * Find by part of description certificates.
@@ -70,7 +71,7 @@ public interface GiftCertificateService {
      * @param size        the size
      * @return the list
      */
-    List<GiftCertificate> findByPartOfDescription(String description, int page, int size);
+    Page<GiftCertificate> findByPartOfDescription(String description, int page, int size);
 
     /**
      * Find all certificates by tags.
@@ -80,7 +81,7 @@ public interface GiftCertificateService {
      * @param size the size
      * @return the list
      */
-    List<GiftCertificate> findAllByTags(List<String> tags, int page, int size);
+    Page<GiftCertificate> findAllByTags(List<String> tags, int page, int size);
 
     /**
      * Update.

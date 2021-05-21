@@ -2,6 +2,7 @@ package com.epam.esm.dao;
 
 import com.epam.esm.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
@@ -19,4 +20,12 @@ public interface UserDao extends JpaRepository<User,Integer> {
     Optional<User> findById(Integer id);
 
     Optional<User> findByUsername(String username);
+
+    @Query(value = "select u.id from (select e.id,sum(w.cost) maxCost\n" +
+            "    from user e\n" +
+            "    join user_order w on e.id = w.user_id\n" +
+            "    group by e.id\n" +
+            ") u\n" +
+            "having max(u.maxCost)",nativeQuery = true)
+    Integer findUserIdWithMaxCost();
 }

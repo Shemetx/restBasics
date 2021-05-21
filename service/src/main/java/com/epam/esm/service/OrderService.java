@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.domain.Order;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface OrderService {
      * @param size the size
      * @return the list
      */
-    List<Order> findAll(int page, int size);
+    Page<Order> findAll(int page, int size);
 
     /**
      * Find by user id orders.
@@ -33,7 +34,7 @@ public interface OrderService {
      * @param size the size
      * @return the list
      */
-    List<Order> findByUserId(int id, int page, int size);
+    Page<Order> findByUserId(int id, int page, int size);
 
     /**
      * Find by id order.

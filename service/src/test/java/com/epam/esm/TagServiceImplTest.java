@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.persistence.NoResultException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,47 +19,44 @@ import static org.mockito.Mockito.when;
 
 public class TagServiceImplTest {
 
+    private final Tag tagTest = new Tag(1, "Test");
     @InjectMocks
-   private TagServiceImpl tagServiceImpl;
-
+    private TagServiceImpl tagServiceImpl;
     @Mock
-   private TagDao tagsDaoImpl;
-
+    private TagDao tagsDaoImpl;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
-    private final  Tag tagTest = new Tag(1,"Test");
-    
     @Test
     public void findByIdPositive() {
-        when(tagsDaoImpl.findById(tagTest.getId())).thenReturn(tagTest);
+        when(tagsDaoImpl.findById(tagTest.getId())).thenReturn(Optional.of(tagTest));
         Tag tag = tagServiceImpl.findById(tagTest.getId());
-        assertEquals(tag,tagTest);
+        assertEquals(tag, tagTest);
 
     }
+
     @Test
     public void findByIdNegative() {
-        when(tagsDaoImpl.findById(tagTest.getId())).thenReturn(null);
-        assertThrows(EntityNotFoundException.class,() -> {
-            tagServiceImpl.findById(tagTest.getId());
-        });
+        when(tagsDaoImpl.findById(tagTest.getId())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () ->
+                tagServiceImpl.findById(tagTest.getId()));
     }
 
     @Test
     public void findByNamePositive() {
-        when(tagsDaoImpl.findByName(tagTest.getName())).thenReturn(tagTest);
+        when(tagsDaoImpl.findByName(tagTest.getName())).thenReturn(Optional.of(tagTest));
         Tag tag = tagServiceImpl.findByName(tagTest.getName());
-        assertEquals(tag,tagTest);
+        assertEquals(tag, tagTest);
     }
+
     @Test
     public void findByNameNegative() {
-        when(tagsDaoImpl.findByName(tagTest.getName())).thenThrow(new NoResultException());
-        assertThrows(EntityNotFoundException.class,() -> {
-            tagServiceImpl.findByName(tagTest.getName());
-        });
+        when(tagsDaoImpl.findByName(tagTest.getName())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () ->
+                tagServiceImpl.findByName(tagTest.getName()));
     }
 
 

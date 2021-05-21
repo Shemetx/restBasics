@@ -6,6 +6,7 @@ import com.epam.esm.dto.TagDto;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.impl.TagServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class TagsController {
     @GetMapping()
     public CollectionModel<TagDto> index(@RequestParam(defaultValue = "1") int page,
                                          @RequestParam(defaultValue = "7") int size) {
-        List<Tag> all = tagService.findAll(page, size);
+        Page<Tag> all = tagService.findAll(page, size);
         return convertor.toCollectionModel(all);
     }
 

@@ -1,19 +1,19 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.OrderDao;
-import com.epam.esm.dao.impl.OrderDaoImpl;
 import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.domain.Order;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
-import com.epam.esm.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,6 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDao orderDao;
     private GiftCertificateService certificateService;
-    private PageUtil pageUtil;
     private UserServiceImpl userService;
 
     @Autowired
@@ -33,15 +32,6 @@ public class OrderServiceImpl implements OrderService {
         this.userService = userService;
     }
 
-    /**
-     * Sets page util.
-     *
-     * @param pageUtil the page util
-     */
-    @Autowired
-    public void setPageUtil(PageUtil pageUtil) {
-        this.pageUtil = pageUtil;
-    }
 
     /**
      * Sets certificate service.
@@ -52,14 +42,13 @@ public class OrderServiceImpl implements OrderService {
     public void setCertificateService(GiftCertificateServiceImpl certificateService) {
         this.certificateService = certificateService;
     }
-
     /**
      * Sets order dao.
      *
      * @param orderDao the order dao
      */
     @Autowired
-    public void setOrderDao(OrderDaoImpl orderDao) {
+    public void setOrderDao(OrderDao orderDao) {
         this.orderDao = orderDao;
     }
 
@@ -87,15 +76,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAll(int page, int size) {
-        page = pageUtil.getCorrectPage(page, size);
-        return orderDao.findAll(page, size);
+    public Page<Order> findAll(int page, int size) {
+        return orderDao.findAll(PageRequest.of(page,size));
     }
 
     @Override
-    public List<Order> findByUserId(int id, int page, int size) {
-        page = pageUtil.getCorrectPage(page, size);
-        List<Order> byUserId = orderDao.findByUserId(id, page, size);
+    public Page<Order> findByUserId(int id, int page, int size) {
+        Page<Order> byUserId = orderDao.findByCustomerId(id, PageRequest.of(page,size));
         if (byUserId.isEmpty()) {
             throw new EntityNotFoundException("User with id: '" + id + "' not found");
         }
@@ -104,11 +91,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(int id) {
-        Order byId = orderDao.findById(id);
-        if (byId == null) {
+        Optional<Order> byId = orderDao.findById(id);
+        if (!byId.isPresent()) {
             throw new EntityNotFoundException("Order with id: '" + id + "' not found");
         }
-        return byId;
+        return byId.get();
     }
 
 }

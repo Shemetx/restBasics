@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.domain.Tag;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface TagService {
      * @param size the size
      * @return the list
      */
-    List<Tag> findAll(int page, int size);
+    Page<Tag> findAll(int page, int size);
 
     /**
      * Find by id tag.
