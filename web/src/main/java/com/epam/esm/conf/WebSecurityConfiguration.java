@@ -1,5 +1,6 @@
 package com.epam.esm.conf;
 
+import com.epam.esm.security.CustomAccessDeniedHandler;
 import com.epam.esm.security.jwt.JwtConfigurer;
 import com.epam.esm.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 
 @Configuration
@@ -41,6 +43,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+                .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_ENDPOINT,MAIN_CERTIFICATES).permitAll()
                 .antMatchers(ADMIN_ONE,ADMIN_SECOND,
@@ -49,6 +53,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
 
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
     }
 
     @Bean

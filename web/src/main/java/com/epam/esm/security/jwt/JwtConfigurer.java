@@ -1,5 +1,6 @@
 package com.epam.esm.security.jwt;
 
+import com.epam.esm.filter.ExceptionHandleFilter;
 import com.epam.esm.filter.JwtTokenFilter;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,8 @@ public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
     @Override
     public void configure(HttpSecurity httpSecurity) {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
+        ExceptionHandleFilter exceptionHandleFilter = new ExceptionHandleFilter();
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(exceptionHandleFilter, JwtTokenFilter.class);
     }
 }

@@ -1,17 +1,15 @@
 package com.epam.esm.exception;
 
-import org.springframework.security.core.AuthenticationException;
-
-public class JwtAuthenticationException extends AuthenticationException {
+public class JwtAuthenticationException extends RuntimeException {
 
     private String message;
 
     public JwtAuthenticationException(String msg) {
-        super(msg);
+        this.message = msg;
     }
 
     @Override
     public String getMessage() {
-        return super.getMessage();
+        return message;
     }
 }
