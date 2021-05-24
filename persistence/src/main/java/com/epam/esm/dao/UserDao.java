@@ -21,11 +21,17 @@ public interface UserDao extends JpaRepository<User,Integer> {
 
     Optional<User> findByUsername(String username);
 
-    @Query(value = "select u.id from (select e.id,sum(w.cost) maxCost\n" +
-            "    from user e\n" +
-            "    join user_order w on e.id = w.user_id\n" +
-            "    group by e.id\n" +
-            ") u\n" +
-            "having max(u.maxCost)",nativeQuery = true)
+    @Query(value = "select *\n" +
+            "from (select e.id, sum(w.cost) maxCost\n" +
+            "      from user e\n" +
+            "               join user_order w on e.id = w.user_id\n" +
+            "      group by e.id\n" +
+            "     ) us\n" +
+            "where us.maxCost = (select max(maxCost)\n" +
+            "                    from (select sum(w.cost) maxCost\n" +
+            "                          from user e\n" +
+            "                                   join user_order w on e.id = w.user_id\n" +
+            "                          group by e.id\n" +
+            "                         ) u)",nativeQuery = true)
     Integer findUserIdWithMaxCost();
 }
