@@ -1,5 +1,6 @@
 package com.epam.esm.conf;
 
+import com.epam.esm.security.AuthEntryPointHandler;
 import com.epam.esm.security.CustomAccessDeniedHandler;
 import com.epam.esm.security.jwt.JwtConfigurer;
 import com.epam.esm.security.jwt.JwtTokenProvider;
@@ -17,6 +18,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private AuthEntryPointHandler authEntryPointHandler;
     private JwtTokenProvider jwtTokenProvider;
     private final static String ADMIN_ENDPOINT_CERTIFICATES = "/certificates/admin/**";
     private final static String ADMIN_ENDPOINT_TAGS = "/tags/admin/**";
@@ -24,6 +26,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String ADMIN_SECOND = "/tags/admin";
     private final static String MAIN_CERTIFICATES = "/certificates";
     private final static String AUTH_ENDPOINT = "/auth/**";
+
+    @Autowired
+    public void setAuthEntryPointHandler(AuthEntryPointHandler authEntryPointHandler) {
+        this.authEntryPointHandler = authEntryPointHandler;
+    }
 
     @Autowired
     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
@@ -35,6 +42,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,7 +60,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ADMIN_ENDPOINT_TAGS,ADMIN_ENDPOINT_CERTIFICATES).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .apply(new JwtConfigurer(jwtTokenProvider))
+                .and()
+                .httpBasic()
+                .authenticationEntryPoint(authEntryPointHandler);
 
     }
 
