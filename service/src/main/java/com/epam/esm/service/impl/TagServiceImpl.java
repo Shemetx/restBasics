@@ -1,9 +1,9 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.dao.TagDao;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +35,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Page<Tag> findAll(int page, int size) {
-        return tagDao.findAll(PageRequest.of(page,size));
+        return tagDao.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag findMostUsed() {
         Integer userIdWithMaxCost = userService.findUserIdWithMaxCost();
-         return tagDao.findMostUsed(userIdWithMaxCost).get();
+        return tagDao.findMostUsed(userIdWithMaxCost).get();
     }
 
 }

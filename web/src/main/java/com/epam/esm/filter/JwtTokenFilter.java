@@ -16,10 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
+/**
+ * Filter which validate jwt token
+ */
 public class JwtTokenFilter extends GenericFilterBean {
 
     private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Instantiates a new Jwt token filter.
+     *
+     * @param jwtTokenProvider the jwt token provider
+     */
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }

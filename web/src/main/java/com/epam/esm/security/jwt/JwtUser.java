@@ -5,6 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * User domain which connects with jwt security
+ */
 public class JwtUser implements UserDetails {
 
     private final Integer id;
@@ -15,6 +18,17 @@ public class JwtUser implements UserDetails {
     private final boolean enable;
     private final Collection<? extends GrantedAuthority> authorities;
 
+    /**
+     * Instantiates a new Jwt user.
+     *
+     * @param id          the id
+     * @param firstName   the first name
+     * @param username    the username
+     * @param email       the email
+     * @param password    the password
+     * @param enable      the enable
+     * @param authorities the authorities
+     */
     public JwtUser(Integer id, String firstName, String username, String email,
                    String password, boolean enable,
                    Collection<? extends GrantedAuthority> authorities) {
@@ -27,14 +41,29 @@ public class JwtUser implements UserDetails {
         this.authorities = authorities;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Gets first name.
+     *
+     * @return the first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }

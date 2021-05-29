@@ -6,7 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface OrderDao extends JpaRepository<Order,Integer> {
+/**
+ * The interface Order dao.
+ */
+public interface OrderDao extends JpaRepository<Order, Integer> {
 
+    /**
+     * Find by customer id.
+     *
+     * @param id       the id
+     * @param pageable the pageable
+     * @return the page
+     */
     Page<Order> findByCustomerId(Integer id, Pageable pageable);
 }

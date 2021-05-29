@@ -14,7 +14,19 @@ public interface UserService {
      */
     User findById(Integer id);
 
+    /**
+     * Sign up user.
+     *
+     * @param user the user
+     * @return the user
+     */
     User signUp(User user);
 
+    /**
+     * Find by username user.
+     *
+     * @param username the username
+     * @return the user
+     */
     User findByUsername(String username);
 }

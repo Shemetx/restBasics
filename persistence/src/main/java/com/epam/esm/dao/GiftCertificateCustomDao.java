@@ -12,5 +12,13 @@ import java.util.List;
  * The interface Gift certificate dao.
  */
 public interface GiftCertificateCustomDao {
+
+    /**
+     * Find by several tags page.
+     *
+     * @param tags     the tags
+     * @param pageable the pageable
+     * @return the page
+     */
     Page<GiftCertificate> findBySeveralTags(List<Tag> tags, Pageable pageable);
 }

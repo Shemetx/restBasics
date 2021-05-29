@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Exception filter which catches exceptions JwtTokenFilter throws.
+ */
 public class ExceptionHandleFilter extends OncePerRequestFilter {
 
     @Override
@@ -24,6 +27,14 @@ public class ExceptionHandleFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * Sets error response.
+     *
+     * @param status   the status
+     * @param response the response
+     * @param ex       the ex
+     * @throws IOException the io exception
+     */
     public void setErrorResponse(HttpStatus status, HttpServletResponse response, Throwable ex) throws IOException {
         response.addHeader("Content-Type", "application/json");
         response.setStatus(status.value());

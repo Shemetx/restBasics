@@ -1,22 +1,28 @@
 package com.epam.esm.security;
 
 import com.epam.esm.domain.User;
-import com.epam.esm.security.jwt.JwtUser;
 import com.epam.esm.security.jwt.JwtUserFactory;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Find user by username to work with.
+ */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
     private UserService userService;
 
+    /**
+     * Sets user service.
+     *
+     * @param userService the user service
+     */
     @Autowired
     public void setUserService(UserServiceImpl userService) {
         this.userService = userService;

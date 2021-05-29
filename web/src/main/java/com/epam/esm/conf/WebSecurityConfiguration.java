@@ -15,23 +15,36 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 
+/**
+ * Web security configuration.
+ */
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private AuthEntryPointHandler authEntryPointHandler;
-    private JwtTokenProvider jwtTokenProvider;
     private final static String ADMIN_ENDPOINT_CERTIFICATES = "/certificates/admin/**";
     private final static String ADMIN_ENDPOINT_TAGS = "/tags/admin/**";
     private final static String ADMIN_ONE = "/certificates/admin";
     private final static String ADMIN_SECOND = "/tags/admin";
     private final static String MAIN_CERTIFICATES = "/certificates";
     private final static String AUTH_ENDPOINT = "/auth/**";
+    private AuthEntryPointHandler authEntryPointHandler;
+    private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Sets auth entry point handler.
+     *
+     * @param authEntryPointHandler the auth entry point handler
+     */
     @Autowired
     public void setAuthEntryPointHandler(AuthEntryPointHandler authEntryPointHandler) {
         this.authEntryPointHandler = authEntryPointHandler;
     }
 
+    /**
+     * Sets jwt token provider.
+     *
+     * @param jwtTokenProvider the jwt token provider
+     */
     @Autowired
     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -44,7 +57,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -55,9 +67,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and()
                 .authorizeRequests()
-                .antMatchers(AUTH_ENDPOINT,MAIN_CERTIFICATES).permitAll()
-                .antMatchers(ADMIN_ONE,ADMIN_SECOND,
-                        ADMIN_ENDPOINT_TAGS,ADMIN_ENDPOINT_CERTIFICATES).hasRole("ADMIN")
+                .antMatchers(AUTH_ENDPOINT, MAIN_CERTIFICATES).permitAll()
+                .antMatchers(ADMIN_ONE, ADMIN_SECOND,
+                        ADMIN_ENDPOINT_TAGS, ADMIN_ENDPOINT_CERTIFICATES).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
@@ -67,11 +79,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
+    /**
+     * Access denied handler access denied handler.
+     *
+     * @return the access denied handler
+     */
     @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
+    public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
 
+    /**
+     * Password encoder b crypt password encoder.
+     *
+     * @return the b crypt password encoder
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

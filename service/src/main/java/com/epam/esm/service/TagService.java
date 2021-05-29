@@ -3,8 +3,6 @@ package com.epam.esm.service;
 import com.epam.esm.domain.Tag;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 /**
  * The interface Tag service.
  */

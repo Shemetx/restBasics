@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 
 /**
@@ -54,7 +53,7 @@ public class TagsController {
      * @return the list of all tags
      */
     @GetMapping()
-    public CollectionModel<TagDto> index(@RequestParam(defaultValue = "1") int page,
+    public CollectionModel<TagDto> index(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "7") int size) {
         Page<Tag> all = tagService.findAll(page, size);
         return convertor.toCollectionModel(all);

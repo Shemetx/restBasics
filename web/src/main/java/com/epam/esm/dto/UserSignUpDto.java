@@ -1,59 +1,30 @@
-package com.epam.esm.domain;
+package com.epam.esm.dto;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 /**
- * The type User.
+ * User DTO to sign up
  */
-@Entity
-@Table(name = "user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class UserSignUpDto {
 
-    @Column(name = "first_name")
+    @Pattern(regexp = "^(([A-Z]([A-z]){1,16}))$", message = "should starts with capital letter 1-16 symbols")
     private String firstName;
 
-    @Column(name = "username")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]{3,15}$", message = " 3 - 15 symbols")
     private String username;
 
-    @Column(name = "email", unique = true)
+    @Email(message = "example@example.com")
     private String email;
 
-    @Column(name = "password")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*)(?=\\S+$).{8,}$",
+            message = "must contain at least 8 symbols, capital letter, small letter and one digit")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private Set<Role> role = new HashSet<>();
-
     /**
-     * Instantiates a new User.
+     * Instantiates a new User sign up dto.
      */
-    public User() {
-    }
-
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(Integer id) {
-        this.id = id;
+    public UserSignUpDto() {
     }
 
     /**
@@ -126,23 +97,5 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * Gets role.
-     *
-     * @return the role
-     */
-    public Set<Role> getRole() {
-        return role;
-    }
-
-    /**
-     * Sets role.
-     *
-     * @param role the role
-     */
-    public void setRole(Set<Role> role) {
-        this.role = role;
     }
 }

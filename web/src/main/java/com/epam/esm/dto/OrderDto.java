@@ -20,7 +20,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
             shape = JsonFormat.Shape.STRING,
             pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime purchaseTime;
-    private User customer;
+    private UserViewDto customer;
     private Set<GiftCertificateDto> certificates;
 
     /**
@@ -88,7 +88,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
      *
      * @return the customer
      */
-    public User getCustomer() {
+    public UserViewDto getCustomer() {
         return customer;
     }
 
@@ -97,7 +97,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
      *
      * @param customer the customer
      */
-    public void setCustomer(User customer) {
+    public void setCustomer(UserViewDto customer) {
         this.customer = customer;
     }
 

@@ -58,7 +58,7 @@ public class GiftCertificatesController {
     @GetMapping()
     public CollectionModel<GiftCertificateDto> index(@RequestParam(required = false) String sortType,
                                                      @RequestParam(required = false) String sortBy,
-                                                     @RequestParam(defaultValue = "1") int page,
+                                                     @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "7") int size) {
 
         Page<GiftCertificate> dtoList;
@@ -90,7 +90,7 @@ public class GiftCertificatesController {
      */
     @PostMapping("/admin")
     public ResponseEntity<GiftCertificateDto> create(@Valid @RequestBody GiftCertificateDto dto) {
-        if(dto.areFieldsNull()){
+        if (dto.areFieldsNull()) {
             throw new IllegalArgumentException("Check body input. Fields must not be null");
         }
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
@@ -134,7 +134,7 @@ public class GiftCertificatesController {
      * @return the list
      */
     @GetMapping("/name/{name}")
-    public CollectionModel<GiftCertificateDto> showByName(@PathVariable("name") String name, @RequestParam(defaultValue = "1") int page,
+    public CollectionModel<GiftCertificateDto> showByName(@PathVariable("name") String name, @RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "7") int size) {
         Page<GiftCertificate> byPartOfName = giftCertificateService.findByPartOfName(name, page, size);
         return convertor.toCollectionModel(byPartOfName);
@@ -150,7 +150,7 @@ public class GiftCertificatesController {
      */
     @GetMapping("/description/{description}")
     public CollectionModel<GiftCertificateDto> showByDescription(@PathVariable("description") String description,
-                                                                 @RequestParam(defaultValue = "1") int page,
+                                                                 @RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "7") int size) {
         Page<GiftCertificate> byPartOfDescr = giftCertificateService.findByPartOfDescription(description, page, size);
         return convertor.toCollectionModel(byPartOfDescr);

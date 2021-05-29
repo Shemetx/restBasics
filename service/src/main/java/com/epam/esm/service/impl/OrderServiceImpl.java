@@ -42,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
     public void setCertificateService(GiftCertificateServiceImpl certificateService) {
         this.certificateService = certificateService;
     }
+
     /**
      * Sets order dao.
      *
@@ -77,12 +78,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> findAll(int page, int size) {
-        return orderDao.findAll(PageRequest.of(page,size));
+        return orderDao.findAll(PageRequest.of(page, size));
     }
 
     @Override
     public Page<Order> findByUserId(int id, int page, int size) {
-        Page<Order> byUserId = orderDao.findByCustomerId(id, PageRequest.of(page,size));
+        Page<Order> byUserId = orderDao.findByCustomerId(id, PageRequest.of(page, size));
         if (byUserId.isEmpty()) {
             throw new EntityNotFoundException("User with id: '" + id + "' not found");
         }

@@ -8,11 +8,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Factory creates JwtUser entity
+ */
 public final class JwtUserFactory {
 
+    /**
+     * Instantiates a new Jwt user factory.
+     */
     public JwtUserFactory() {
     }
 
+    /**
+     * Create jwt user.
+     *
+     * @param user the user
+     * @return the jwt user
+     */
     public static JwtUser create(User user) {
         return new JwtUser(
                 user.getId(),

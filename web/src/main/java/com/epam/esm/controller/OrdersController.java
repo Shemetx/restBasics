@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * Catches users requests by mapping /orders
  */
@@ -62,7 +60,7 @@ public class OrdersController {
      * @return all orders
      */
     @GetMapping()
-    public CollectionModel<OrderDto> index(@RequestParam(defaultValue = "1") int page,
+    public CollectionModel<OrderDto> index(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "7") int size) {
         Page<Order> all = orderService.findAll(page, size);
         return orderConvertor.toCollectionModel(all);
@@ -78,7 +76,7 @@ public class OrdersController {
      */
     @GetMapping("/user/{id}")
     public CollectionModel<OrderDto> userOrders(@PathVariable int id,
-                                                @RequestParam(defaultValue = "1") int page,
+                                                @RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "7") int size) {
         Page<Order> byUserId = orderService.findByUserId(id, page, size);
         return orderConvertor.toCollectionModel(byUserId);

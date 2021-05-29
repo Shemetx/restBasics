@@ -6,6 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Configuration to start only dao layer for testing
+ */
 @Configuration
 @EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = "com.epam.esm.dao")

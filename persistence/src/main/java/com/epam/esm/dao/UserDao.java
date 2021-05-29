@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * The interface User dao.
  */
-public interface UserDao extends JpaRepository<User,Integer> {
+public interface UserDao extends JpaRepository<User, Integer> {
     /**
      * Find by id user.
      *
@@ -19,8 +19,19 @@ public interface UserDao extends JpaRepository<User,Integer> {
      */
     Optional<User> findById(Integer id);
 
+    /**
+     * Find by username.
+     *
+     * @param username the username
+     * @return the optional
+     */
     Optional<User> findByUsername(String username);
 
+    /**
+     * Find user id with max cost.
+     *
+     * @return the integer
+     */
     @Query(value = "select *\n" +
             "from (select e.id, sum(w.cost) maxCost\n" +
             "      from user e\n" +
@@ -32,6 +43,6 @@ public interface UserDao extends JpaRepository<User,Integer> {
             "                          from user e\n" +
             "                                   join user_order w on e.id = w.user_id\n" +
             "                          group by e.id\n" +
-            "                         ) u)",nativeQuery = true)
+            "                         ) u)", nativeQuery = true)
     Integer findUserIdWithMaxCost();
 }
