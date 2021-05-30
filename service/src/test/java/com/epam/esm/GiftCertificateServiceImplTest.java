@@ -145,7 +145,7 @@ public class GiftCertificateServiceImplTest {
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(PageRequest.of(page, size, Sort.by("createDate").ascending()))).thenReturn(pageGifts);
-        Page<GiftCertificate> ascendingDate = service.getSortedList("asc", "date", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"asc", "date", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 
@@ -161,7 +161,7 @@ public class GiftCertificateServiceImplTest {
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(PageRequest.of(page, size, Sort.by("createDate").descending()))).thenReturn(pageGifts);
 
-        Page<GiftCertificate> ascendingDate = service.getSortedList("desc", "date", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"desc", "date", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 
@@ -177,7 +177,7 @@ public class GiftCertificateServiceImplTest {
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(PageRequest.of(page, size, Sort.by("name").ascending()))).thenReturn(pageGifts);
 
-        Page<GiftCertificate> ascendingDate = service.getSortedList("asc", "name", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"asc", "name", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 
@@ -193,7 +193,7 @@ public class GiftCertificateServiceImplTest {
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(PageRequest.of(page, size, Sort.by("name").descending()))).thenReturn(pageGifts);
 
-        Page<GiftCertificate> ascendingDate = service.getSortedList("desc", "name", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"desc", "name", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 }

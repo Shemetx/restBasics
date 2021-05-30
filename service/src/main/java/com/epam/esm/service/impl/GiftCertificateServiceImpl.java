@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,26 +58,27 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 
     @Override
-    public Page<GiftCertificate> findAll(int page, int size) {
-        return giftCertificateDao.findAll(PageRequest.of(page, size));
+    public Page<GiftCertificate> findAll(Specification<GiftCertificate> specification, int page, int size) {
+        return giftCertificateDao.findAll(specification, PageRequest.of(page, size));
     }
 
     @Override
-    public Page<GiftCertificate> getSortedList(String sortType, String sortBy, int page, int size) {
+    public Page<GiftCertificate> getSortedList(Specification<GiftCertificate> specification,
+                                               String sortType, String sortBy, int page, int size) {
         Page<GiftCertificate> sortedList = null;
         SortingTypes sortingTypes = SortingTypes.resolveByName(sortType, sortBy);
         switch (sortingTypes) {
             case ASC_NAME:
-                sortedList = giftCertificateDao.findAll(PageRequest.of(page, size, Sort.by("name").ascending()));
+                sortedList = giftCertificateDao.findAll(specification, PageRequest.of(page, size, Sort.by("name").ascending()));
                 break;
             case ASC_DATE:
-                sortedList = giftCertificateDao.findAll(PageRequest.of(page, size, Sort.by("createDate").ascending()));
+                sortedList = giftCertificateDao.findAll(specification, PageRequest.of(page, size, Sort.by("createDate").ascending()));
                 break;
             case DESC_NAME:
-                sortedList = giftCertificateDao.findAll(PageRequest.of(page, size, Sort.by("name").descending()));
+                sortedList = giftCertificateDao.findAll(specification, PageRequest.of(page, size, Sort.by("name").descending()));
                 break;
             case DESC_DATE:
-                sortedList = giftCertificateDao.findAll(PageRequest.of(page, size, Sort.by("createDate").descending()));
+                sortedList = giftCertificateDao.findAll(specification, PageRequest.of(page, size, Sort.by("createDate").descending()));
                 break;
             default:
         }
@@ -92,23 +94,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return byId.get();
     }
 
-    @Override
-    public Page<GiftCertificate> findByPartOfName(String name, int page, int size) {
-        Page<GiftCertificate> byNameContains = giftCertificateDao.findByNameContains(name, PageRequest.of(page, size));
-        if (byNameContains.isEmpty()) {
-            throw new EntityNotFoundException("Gift certificate with part of name: '" + name + "' not found");
-        }
-        return byNameContains;
-    }
-
-    @Override
-    public Page<GiftCertificate> findByPartOfDescription(String description, int page, int size) {
-        Page<GiftCertificate> byDescriptionContains = giftCertificateDao.findByDescriptionContains(description, PageRequest.of(page, size));
-        if (byDescriptionContains.isEmpty()) {
-            throw new EntityNotFoundException("Gift certificate with part of description: '" + description + "' not found");
-        }
-        return byDescriptionContains;
-    }
 
     @Override
     public Page<GiftCertificate> findAllByTags(List<String> tags, int page, int size) {

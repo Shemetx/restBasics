@@ -1,8 +1,6 @@
 package com.epam.esm;
 
-import com.epam.esm.domain.Tag;
 import io.restassured.http.ContentType;
-import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +14,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.empty;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("dev")
 public class TagControllerTest {
 
@@ -51,7 +49,7 @@ public class TagControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(201)
-                .body("name",Matchers.equalTo("tagCreateTest"));
+                .body("name", Matchers.equalTo("tagCreateTest"));
     }
 
     @Test
@@ -61,6 +59,7 @@ public class TagControllerTest {
                 .assertThat()
                 .statusCode(204);
     }
+
     @Test
     public void deleteTestNegative() {
         delete("http://localhost:8080/tags/333333")

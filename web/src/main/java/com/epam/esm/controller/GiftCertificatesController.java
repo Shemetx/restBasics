@@ -5,8 +5,10 @@ import com.epam.esm.domain.GiftCertificate;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.impl.GiftCertificateServiceImpl;
+import com.epam.esm.specification.SpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,23 +51,28 @@ public class GiftCertificatesController {
     /**
      * Return all certificates
      *
-     * @param sortType the sort type
-     * @param sortBy   the sort by
-     * @param page     the page
-     * @param size     the size
+     * @param sortType    the sort type
+     * @param sortBy      the sort by
+     * @param name        the name
+     * @param description the description
+     * @param page        the page
+     * @param size        the size
      * @return the list of all tags
      */
     @GetMapping()
     public CollectionModel<GiftCertificateDto> index(@RequestParam(required = false) String sortType,
                                                      @RequestParam(required = false) String sortBy,
+                                                     @RequestParam(required = false) String name,
+                                                     @RequestParam(required = false) String description,
                                                      @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "7") int size) {
 
+        Specification<GiftCertificate> specification = SpecificationBuilder.build(name, description);
         Page<GiftCertificate> dtoList;
         if (sortType != null && sortBy != null) {
-            dtoList = giftCertificateService.getSortedList(sortType, sortBy, page, size);
+            dtoList = giftCertificateService.getSortedList(specification, sortType, sortBy, page, size);
         } else {
-            dtoList = giftCertificateService.findAll(page, size);
+            dtoList = giftCertificateService.findAll(specification, page, size);
         }
         return convertor.toCollectionModel(dtoList);
     }
@@ -126,38 +133,6 @@ public class GiftCertificatesController {
     }
 
     /**
-     * Show all certificates that found by part of name
-     *
-     * @param name the name
-     * @param page the page
-     * @param size the size
-     * @return the list
-     */
-    @GetMapping("/name/{name}")
-    public CollectionModel<GiftCertificateDto> showByName(@PathVariable("name") String name, @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "7") int size) {
-        Page<GiftCertificate> byPartOfName = giftCertificateService.findByPartOfName(name, page, size);
-        return convertor.toCollectionModel(byPartOfName);
-    }
-
-    /**
-     * Show all certificates that found by part of description
-     *
-     * @param description the description
-     * @param page        the page
-     * @param size        the size
-     * @return the list
-     */
-    @GetMapping("/description/{description}")
-    public CollectionModel<GiftCertificateDto> showByDescription(@PathVariable("description") String description,
-                                                                 @RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "7") int size) {
-        Page<GiftCertificate> byPartOfDescr = giftCertificateService.findByPartOfDescription(description, page, size);
-        return convertor.toCollectionModel(byPartOfDescr);
-    }
-
-
-    /**
      * Show all certificates that have requested tags.
      *
      * @param tags the tags
@@ -169,6 +144,7 @@ public class GiftCertificatesController {
     public CollectionModel<GiftCertificateDto> showByTag(@RequestParam(value = "name") List<String> tags,
                                                          @RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "7") int size) {
+
         Page<GiftCertificate> certificateList = giftCertificateService.findAllByTags(tags, page, size);
         return convertor.toCollectionModel(certificateList);
     }

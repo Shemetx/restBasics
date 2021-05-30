@@ -26,19 +26,19 @@ public class CertificateHateoasResolver implements HateoasModelLinker<GiftCertif
     @Override
     public void addLinks(CollectionModel<GiftCertificateDto> entities, int page, int size) {
         entities.add(linkTo(methodOn(GiftCertificatesController.class)
-                .index("asc", "name", page, size))
+                .index("asc", "name",null,null, page, size))
                 .withRel("Ascending sort by name"));
 
         entities.add(linkTo(methodOn(GiftCertificatesController.class)
-                .index("asc", "date", page, size))
+                .index("asc", "date", null,null, page, size))
                 .withRel("Ascending sort by date"));
 
         entities.add(linkTo(methodOn(GiftCertificatesController.class)
-                .index("desc", "name", page, size))
+                .index("desc", "name",null,null, page, size))
                 .withRel("Descending sort by name"));
 
         entities.add(linkTo(methodOn(GiftCertificatesController.class)
-                .index("desc", "date", page, size))
+                .index("desc", "date",null,null, page, size))
                 .withRel("Descending sort by date"));
     }
 
