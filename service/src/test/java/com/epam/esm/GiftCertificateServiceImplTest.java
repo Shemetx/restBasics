@@ -6,6 +6,7 @@ import com.epam.esm.domain.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.impl.GiftCertificateServiceImpl;
+import com.epam.esm.specification.SpecificationBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ public class GiftCertificateServiceImplTest {
     final int size = 7;
     private final GiftCertificate testEntity = new GiftCertificate(1, "Test", "Test description", 3.6f,
             30, LocalDateTime.parse("2020-01-01T12:12:12"), LocalDateTime.parse("2020-03-03T14:14:14"));
+    private final Specification<GiftCertificate> specificationName = SpecificationBuilder.build("est", null);
+    private final Specification<GiftCertificate> specificationDescription = SpecificationBuilder.build(null, "descr");
+    private final Specification<GiftCertificate> specificationEmpty = SpecificationBuilder.build(null, null);
     @InjectMocks
     @Spy
     private GiftCertificateServiceImpl service;
@@ -52,16 +57,16 @@ public class GiftCertificateServiceImplTest {
             add(testEntity);
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(testList);
-        when(dao.findByNameContains(testEntity.getName(), PageRequest.of(page, size))).thenReturn(pageGifts);
-        Page<GiftCertificate> list = service.findByPartOfName(testEntity.getName(), page, size);
+        when(dao.findAll(specificationName, PageRequest.of(page, size))).thenReturn(pageGifts);
+        Page<GiftCertificate> list = service.findAll(specificationName, page, size);
         assertEquals(list, pageGifts);
     }
 
     @Test
     public void findByPartOfNameNegative() {
-        when(dao.findByNameContains(testEntity.getName(), PageRequest.of(page, size))).thenReturn(Page.empty());
-        assertThrows(EntityNotFoundException.class, () ->
-                service.findByPartOfName(testEntity.getName(), page, size));
+        when(dao.findAll(specificationName, PageRequest.of(page, size))).thenReturn(Page.empty());
+        Page<GiftCertificate> actual = service.findAll(specificationName,page,size);
+        assertEquals(actual,Page.empty());
     }
 
     @Test
@@ -70,16 +75,16 @@ public class GiftCertificateServiceImplTest {
             add(testEntity);
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(testList);
-        when(dao.findByDescriptionContains(testEntity.getDescription(), PageRequest.of(page, size))).thenReturn(pageGifts);
-        Page<GiftCertificate> list = service.findByPartOfDescription(testEntity.getDescription(), page, size);
+        when(dao.findAll(specificationDescription, PageRequest.of(page, size))).thenReturn(pageGifts);
+        Page<GiftCertificate> list = service.findAll(specificationDescription, page, size);
         assertEquals(list, pageGifts);
     }
 
     @Test
     public void findByPartOfDescriptionNegative() {
-        when(dao.findByDescriptionContains(testEntity.getDescription(), PageRequest.of(page, size))).thenReturn(Page.empty());
-        assertThrows(EntityNotFoundException.class, () ->
-                service.findByPartOfDescription(testEntity.getDescription(), page, size));
+        when(dao.findAll(specificationDescription, PageRequest.of(page, size))).thenReturn(Page.empty());
+        Page<GiftCertificate> actual = service.findAll(specificationDescription,page,size);
+        assertEquals(actual,Page.empty());
     }
 
     @Test
@@ -144,8 +149,8 @@ public class GiftCertificateServiceImplTest {
             add(testEntity);
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
-        when(dao.findAll(PageRequest.of(page, size, Sort.by("createDate").ascending()))).thenReturn(pageGifts);
-        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"asc", "date", page, size);
+        when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("createDate").ascending()))).thenReturn(pageGifts);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(specificationEmpty, "asc", "date", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 
@@ -159,9 +164,9 @@ public class GiftCertificateServiceImplTest {
             add(testEntity);
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
-        when(dao.findAll(PageRequest.of(page, size, Sort.by("createDate").descending()))).thenReturn(pageGifts);
+        when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("createDate").descending()))).thenReturn(pageGifts);
 
-        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"desc", "date", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(specificationEmpty, "desc", "date", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 
@@ -175,9 +180,9 @@ public class GiftCertificateServiceImplTest {
             add(certificate);
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
-        when(dao.findAll(PageRequest.of(page, size, Sort.by("name").ascending()))).thenReturn(pageGifts);
+        when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("name").ascending()))).thenReturn(pageGifts);
 
-        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"asc", "name", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(specificationEmpty, "asc", "name", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 
@@ -191,9 +196,9 @@ public class GiftCertificateServiceImplTest {
             add(testEntity);
         }};
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
-        when(dao.findAll(PageRequest.of(page, size, Sort.by("name").descending()))).thenReturn(pageGifts);
+        when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("name").descending()))).thenReturn(pageGifts);
 
-        Page<GiftCertificate> ascendingDate = service.getSortedList(null,"desc", "name", page, size);
+        Page<GiftCertificate> ascendingDate = service.getSortedList(specificationEmpty, "desc", "name", page, size);
         assertEquals(pageGifts, ascendingDate);
     }
 }
