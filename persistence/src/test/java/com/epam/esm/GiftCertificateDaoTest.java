@@ -40,12 +40,6 @@ public class GiftCertificateDaoTest {
     }
 
     @Test
-    public void findByIdTest() {
-        Optional<GiftCertificate> byTagId = dao.findById(1);
-        assertEquals("testNameFirst", byTagId.get().getName());
-    }
-
-    @Test
     public void findByTagIdTest() {
         Tag first = new Tag(2, "testTagSecond");
         Tag second = new Tag(3, "testTagThird");
@@ -57,19 +51,6 @@ public class GiftCertificateDaoTest {
         assertEquals(2, byTagId.getContent().get(0).getId());
     }
 
-    @Test
-    public void findByPartNameTest() {
-        Page<GiftCertificate> first = dao.findByNameContains("First", PageRequest.of(page,size));
-        GiftCertificate certificate = first.getContent().get(0);
-        assertEquals(certificate.getName(), "testNameFirst");
-    }
-
-    @Test
-    public void findByPartDescriptionTest() {
-        Page<GiftCertificate> first = dao.findByDescriptionContains("First", PageRequest.of(page,size));
-        GiftCertificate certificate = first.getContent().get(0);
-        assertEquals(certificate.getDescription(), "testDescriptionFirst");
-    }
 
     @Transactional
     @Test

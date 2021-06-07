@@ -13,3 +13,17 @@ insert into certificates_tags(cert_id, tag_id) VALUES(1,1);
 insert into certificates_tags(cert_id, tag_id) VALUES(1,2);
 insert into certificates_tags(cert_id, tag_id) VALUES(2,2);
 insert into certificates_tags(cert_id, tag_id) VALUES(2,3);
+
+insert into user(id,email, password, first_name, username)
+VALUES (1,'admin@admin.com','admin','admin','admin');
+
+insert into user(id,email, password, first_name, username)
+VALUES (2,'user@user.com','user','user','user');
+
+insert into user_role(id, role) VALUES (1,'ROLE_USER');
+insert into user_role(id, role) VALUES (2,'ROLE_ADMIN');
+
+insert into users_roles(user_id, role_id) VALUES (1,2);
+insert into users_roles(user_id, role_id) VALUES (1,1);
+insert into users_roles(user_id, role_id) VALUES (2,1)
+

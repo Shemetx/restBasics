@@ -18,6 +18,44 @@ create table tag
         primary key,
     name varchar(100) not null unique
 );
+create table user
+(
+    id         int auto_increment
+        primary key,
+    email      varchar(255) not null,
+    password   varchar(255) not null,
+    first_name varchar(255) null,
+    username   varchar(255) not null,
+    constraint email
+        unique (email),
+    constraint username
+        unique (username)
+);
+create table user_role
+(
+    id   int auto_increment
+        primary key,
+    role varchar(30) not null,
+    constraint role
+        unique (role)
+);
+
+create table users_roles
+(
+    user_id int not null,
+    role_id int not null,
+        foreign key (user_id) references user (id)
+            on update cascade on delete cascade,
+        foreign key (role_id) references user_role (id)
+            on update cascade on delete cascade
+);
+
+create index role_id_index
+    on users_roles (role_id);
+
+create index user_id_index
+    on users_roles (user_id);
+
 
 create table certificates_tags
 (
