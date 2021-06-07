@@ -1,4 +1,4 @@
-package com.epam.esm.security.jwt;
+package com.epam.esm.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
-package com.epam.esm.security;
+package com.epam.esm.jwt;
 
 import com.epam.esm.domain.User;
-import com.epam.esm.security.jwt.JwtUserFactory;
+import com.epam.esm.jwt.JwtUserFactory;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import com.epam.esm.domain.User;
 import com.epam.esm.dto.AuthUserDto;
 import com.epam.esm.dto.UserSignUpDto;
 import com.epam.esm.dto.UserViewDto;
-import com.epam.esm.security.jwt.JwtTokenProvider;
+import com.epam.esm.jwt.JwtTokenProvider;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -113,7 +113,8 @@ public class AuthenticationController {
     @PostMapping("/signUp")
     public ResponseEntity<UserViewDto> signUp(@Valid @RequestBody UserSignUpDto dto) {
         User user = userDtoConvertor.dtoToEntity(dto);
+        User saved = userService.signUp(user);
         return new ResponseEntity<>(
-                userDtoConvertor.toModel(user), HttpStatus.CREATED);
+                userDtoConvertor.toModel(saved), HttpStatus.CREATED);
     }
 }

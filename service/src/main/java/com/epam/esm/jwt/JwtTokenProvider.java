@@ -1,4 +1,4 @@
-package com.epam.esm.security.jwt;
+package com.epam.esm.jwt;
 
 import com.epam.esm.domain.Role;
 import com.epam.esm.exception.JwtAuthenticationException;

@@ -2,8 +2,8 @@ package com.epam.esm.conf;
 
 import com.epam.esm.security.AuthEntryPointHandler;
 import com.epam.esm.security.CustomAccessDeniedHandler;
-import com.epam.esm.security.jwt.JwtConfigurer;
-import com.epam.esm.security.jwt.JwtTokenProvider;
+import com.epam.esm.security.JwtConfigurer;
+import com.epam.esm.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

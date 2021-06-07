@@ -1,7 +1,8 @@
-package com.epam.esm.security.jwt;
+package com.epam.esm.security;
 
 import com.epam.esm.filter.ExceptionHandleFilter;
 import com.epam.esm.filter.JwtTokenFilter;
+import com.epam.esm.jwt.JwtTokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

@@ -22,7 +22,7 @@ public class AuthEntryPointHandler extends BasicAuthenticationEntryPoint {
             throws IOException {
         response.addHeader("Content-Type", "application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        Error error = new Error(401, "You should be authorised");
+        Error error = new Error(401, "You should be authorized");
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(out, error);
