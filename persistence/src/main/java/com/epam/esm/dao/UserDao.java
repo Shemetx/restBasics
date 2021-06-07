@@ -28,6 +28,15 @@ public interface UserDao extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
 
     /**
+     * Find by email or username.
+     *
+     * @param email the email
+     * @param username the username
+     * @return the optional
+     */
+    Optional<User> findByEmailOrUsername(String email, String username);
+
+    /**
      * Find user id with max cost.
      *
      * @return the integer

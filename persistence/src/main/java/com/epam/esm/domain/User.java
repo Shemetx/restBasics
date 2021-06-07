@@ -39,6 +39,25 @@ public class User {
     }
 
     /**
+     * Constructor with parameters
+     *
+     * @param id
+     * @param firstName
+     * @param username
+     * @param email
+     * @param password
+     * @param role
+     */
+    public User(Integer id, String firstName, String username, String email, String password, Set<Role> role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    /**
      * Gets id.
      *
      * @return the id

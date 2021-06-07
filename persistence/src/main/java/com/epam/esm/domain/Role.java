@@ -23,6 +23,15 @@ public class Role {
     }
 
     /**
+     *  Constructor with role name
+     *
+     * @param role
+     */
+    public Role(String role) {
+        this.role = role;
+    }
+
+    /**
      * Gets id.
      *
      * @return the id

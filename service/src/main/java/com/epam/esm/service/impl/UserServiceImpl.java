@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.domain.User;
+import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signUp(User user) {
+        Optional<User> byEmailOrUsername = userDao.findByEmailOrUsername(user.getEmail(), user.getUsername());
+        if (byEmailOrUsername.isPresent()) {
+            throw new EntityAlreadyExistsException("User with this email or username already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.save(user);
     }
