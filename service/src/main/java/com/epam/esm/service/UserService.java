@@ -2,6 +2,8 @@ package com.epam.esm.service;
 
 import com.epam.esm.domain.User;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * The interface User service.
  */
@@ -29,4 +31,6 @@ public interface UserService {
      * @return the user
      */
     User findByUsername(String username);
+
+    User getIdFromHttpRequest(HttpServletRequest request);
 }

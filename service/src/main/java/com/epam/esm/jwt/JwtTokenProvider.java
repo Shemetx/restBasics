@@ -126,6 +126,15 @@ public class JwtTokenProvider {
         }
     }
 
+    public String getUserNameFromToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return claims.getBody().getSubject();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtAuthenticationException("JWT token is expired or invalid");
+        }
+    }
+
     private Set<String> getRoleNames(Set<Role> roles) {
         Set<String> result = new HashSet<>();
         roles.forEach(role -> {

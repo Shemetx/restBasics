@@ -56,7 +56,6 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order save(Order order) {
-        userService.findById(order.getCustomer().getId());
         Set<GiftCertificate> certificates = order.getCertificates();
         Set<GiftCertificate> certificateSet = certificateIdToEntity(certificates);
         double collect = certificateSet.stream().mapToDouble(GiftCertificate::getPrice).sum();
@@ -85,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
     public Page<Order> findByUserId(int id, int page, int size) {
         Page<Order> byUserId = orderDao.findByCustomerId(id, PageRequest.of(page, size));
         if (byUserId.isEmpty()) {
-            throw new EntityNotFoundException("User with id: '" + id + "' not found");
+            throw new EntityNotFoundException("User with id: '" + id + "' have no orders");
         }
         return byUserId;
     }

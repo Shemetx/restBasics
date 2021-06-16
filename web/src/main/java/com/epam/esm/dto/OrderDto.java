@@ -1,6 +1,5 @@
 package com.epam.esm.dto;
 
-import com.epam.esm.domain.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 

@@ -2,6 +2,7 @@ package com.epam.esm.convertor;
 
 import com.epam.esm.domain.Order;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.OrderUserViewDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.UserViewDto;
 import com.epam.esm.hateoas.HateoasModelLinker;
@@ -55,7 +56,7 @@ public class OrderConvertor implements RepresentationModelAssembler<Order, Order
      * @param dto the dto
      * @return the order
      */
-    public Order dtoToEntity(OrderDto dto) {
+    public Order dtoToEntity(OrderUserViewDto dto) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(dto, Order.class);
     }

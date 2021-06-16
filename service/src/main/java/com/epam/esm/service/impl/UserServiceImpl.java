@@ -4,11 +4,13 @@ import com.epam.esm.dao.UserDao;
 import com.epam.esm.domain.User;
 import com.epam.esm.exception.EntityAlreadyExistsException;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.jwt.JwtTokenProvider;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 /**
@@ -19,6 +21,12 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
     private BCryptPasswordEncoder passwordEncoder;
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    public void setTokenProvider(JwtTokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     @Autowired
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
@@ -63,5 +71,12 @@ public class UserServiceImpl implements UserService {
 
         }
         return byUsername.get();
+    }
+
+    @Override
+    public User getIdFromHttpRequest(HttpServletRequest request) {
+        String token = tokenProvider.resolveToken(request);
+        String userNameFromToken = tokenProvider.getUserNameFromToken(token);
+        return findByUsername(userNameFromToken);
     }
 }
