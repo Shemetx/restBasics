@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -78,7 +79,8 @@ public class TagsController {
      * @param tag the tag
      * @return list of all tags
      */
-    @PostMapping("/admin")
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody TagDto tag) {
         Tag tag1 = convertor.dtoToEntity(tag);
         Tag save = tagService.save(tag1);
@@ -91,7 +93,8 @@ public class TagsController {
      * @param id the id
      * @return blank page
      */
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         tagService.delete(id);
         return ResponseEntity.noContent().build();

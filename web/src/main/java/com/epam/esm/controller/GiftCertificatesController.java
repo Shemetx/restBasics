@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -95,7 +96,8 @@ public class GiftCertificatesController {
      * @param dto the dto
      * @return the gift certificate dto
      */
-    @PostMapping("/admin")
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GiftCertificateDto> create(@Valid @RequestBody GiftCertificateDto dto) {
         if (dto.areFieldsNull()) {
             throw new IllegalArgumentException("Check body input. Fields must not be null");
@@ -112,7 +114,8 @@ public class GiftCertificatesController {
      * @param id  the id
      * @return the gift certificate dto
      */
-    @PatchMapping("/admin/{id}")
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public GiftCertificateDto update(@Valid @RequestBody GiftCertificateDto dto, @PathVariable("id") int id) {
         GiftCertificate giftCertificate = convertor.dtoToEntity(dto);
         giftCertificate.setId(id);
@@ -126,7 +129,8 @@ public class GiftCertificatesController {
      * @param id the id
      * @return the list
      */
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         giftCertificateService.delete(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
