@@ -24,6 +24,5 @@ insert into user_role(id, role) VALUES (1,'ROLE_USER');
 insert into user_role(id, role) VALUES (2,'ROLE_ADMIN');
 
 insert into users_roles(user_id, role_id) VALUES (1,2);
-insert into users_roles(user_id, role_id) VALUES (1,1);
-insert into users_roles(user_id, role_id) VALUES (2,1)
+insert into users_roles(user_id, role_id) VALUES (2,1);
 

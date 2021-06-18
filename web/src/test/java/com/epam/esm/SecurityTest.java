@@ -10,8 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext
 @ActiveProfiles("dev")
 public class SecurityTest {
 
@@ -48,7 +50,7 @@ public class SecurityTest {
     @WithUserDetails()
     @Test
     public void authorityDeniedException() throws Exception {
-        mockMvc.perform(post("/tags/admin").param("name", "testTag"))
+        mockMvc.perform(post("/tags").param("name", "testTag"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
@@ -70,7 +72,7 @@ public class SecurityTest {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String s = ow.writeValueAsString(tag);
 
-        mockMvc.perform(post("/tags/admin").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/tags").contentType(MediaType.APPLICATION_JSON)
                 .content(s))
                 .andExpect(status().isCreated());
     }

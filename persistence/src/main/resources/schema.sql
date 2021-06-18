@@ -1,4 +1,4 @@
-create table gift_certificate
+create table if not exists gift_certificate
 (
     id               int auto_increment
         primary key,
@@ -12,13 +12,13 @@ create table gift_certificate
         unique (name)
 );
 
-create table tag
+create table if not exists tag
 (
     id   int auto_increment
         primary key,
     name varchar(100) not null unique
 );
-create table user
+create table if not exists  user
 (
     id         int auto_increment
         primary key,
@@ -31,7 +31,7 @@ create table user
     constraint username
         unique (username)
 );
-create table user_role
+create table if not exists user_role
 (
     id   int auto_increment
         primary key,
@@ -40,7 +40,7 @@ create table user_role
         unique (role)
 );
 
-create table users_roles
+create table if not exists users_roles
 (
     user_id int not null,
     role_id int not null,
@@ -50,14 +50,7 @@ create table users_roles
             on update cascade on delete cascade
 );
 
-create index role_id_index
-    on users_roles (role_id);
-
-create index user_id_index
-    on users_roles (user_id);
-
-
-create table certificates_tags
+create table if not exists certificates_tags
 (
     cert_id int not null,
     tag_id  int not null,
@@ -68,9 +61,3 @@ create table certificates_tags
         foreign key (tag_id) references tag (id)
             on update cascade on delete cascade
 );
-
-create index cert_id
-    on certificates_tags (cert_id);
-
-create index tag_id
-    on certificates_tags (tag_id);
