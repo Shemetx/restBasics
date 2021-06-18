@@ -1,5 +1,6 @@
 project.dependencies {
     compile project(':persistence')
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 }
 test {
     useJUnitPlatform()
