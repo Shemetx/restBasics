@@ -66,7 +66,7 @@ public class OrderConvertor implements RepresentationModelAssembler<Order, Order
         UserViewDto userViewDto = userConvertor.toModel(entity.getCustomer());
 
         Set<GiftCertificateDto> collect = entity.getCertificates().stream()
-                .map(temp -> certificateConvertor.toModel(temp))
+                .map(certificateConvertor::toModel)
                 .collect(Collectors.toSet());
 
         ModelMapper mapper = new ModelMapper();

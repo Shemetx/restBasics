@@ -56,7 +56,7 @@ public class GiftCertificateConvertor implements RepresentationModelAssembler<Gi
 
     @Override
     public GiftCertificateDto toModel(GiftCertificate entity) {
-        Set<TagDto> collect = entity.getTags().stream().map(tag -> tagConvertor.toModel(tag)).collect(Collectors.toSet());
+        Set<TagDto> collect = entity.getTags().stream().map(tagConvertor::toModel).collect(Collectors.toSet());
         ModelMapper mapper = new ModelMapper();
         GiftCertificateDto map = mapper.map(entity, GiftCertificateDto.class);
         map.setTags(collect);
