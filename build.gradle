@@ -1,9 +1,25 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.1'
+}
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
 
     repositories {
         mavenCentral()
     }
+
     dependencies {
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '2.4.5'
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.5'
@@ -11,4 +27,8 @@ subprojects {
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.5'
         implementation 'junit:junit:4.13.1'
     }
+}
+
+bootJar {
+    enabled = false
 }

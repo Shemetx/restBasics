@@ -1,8 +1,16 @@
 project.dependencies {
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.8.1'
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.24'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
 }
 test {
     useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }
