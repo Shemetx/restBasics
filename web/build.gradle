@@ -3,11 +3,11 @@ plugins {
     id 'war'
 }
 
-war {
-    archivesBaseName = 'CertificatesService'
-    version '1.0-SNAPSHOT'
-}
-
+//war {
+//    archivesBaseName = 'CertificatesService'
+//    version '1.0-SNAPSHOT'
+//}
+archivesBaseName = 'CertificatesService'
 mainClassName = 'com.epam.esm.Application'
 
 project.dependencies {

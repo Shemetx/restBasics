@@ -7,10 +7,16 @@ test {
     useJUnitPlatform()
 }
 
-bootJar {
+//bootJar {
+//    enabled = false
+//}
+//
+//jar {
+//    enabled = true
+//}
+bootWar {
     enabled = false
 }
-
-jar {
-    enabled = true
+war {
+    enabled=true
 }
