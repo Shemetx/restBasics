@@ -7,7 +7,7 @@ plugins {
 //    archivesBaseName = 'CertificatesService'
 //    version '1.0-SNAPSHOT'
 //}
-archivesBaseName = 'CertificatesService'
+archivesBaseName = 'CertificatesServiceOne'
 mainClassName = 'com.epam.esm.Application'
 
 project.dependencies {
