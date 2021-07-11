@@ -50,7 +50,7 @@ public class TagControllerTest {
     public void byIdTest() {
         given().header("Authorization", "Bearer " + token)
                 .when()
-                .get("http://localhost:8080/tags/1")
+                .get("http://localhost:7777/tags/1")
                 .then()
                 .assertThat()
                 .statusCode(200)
@@ -61,7 +61,7 @@ public class TagControllerTest {
     public void indexTest() {
         given().header("Authorization", "Bearer " + token)
                 .when()
-                .get("http://localhost:8080/tags")
+                .get("http://localhost:7777/tags")
                 .then()
                 .assertThat()
                 .statusCode(200)
@@ -73,7 +73,7 @@ public class TagControllerTest {
         given().header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .body(tagCreateTest)
-                .post("http://localhost:8080/tags")
+                .post("http://localhost:7777/tags")
                 .then()
                 .assertThat()
                 .statusCode(201)
@@ -84,7 +84,7 @@ public class TagControllerTest {
     public void deleteTestPositive() {
         given().header("Authorization", "Bearer " + token)
                 .when()
-                .delete("http://localhost:8080/tags/33")
+                .delete("http://localhost:7777/tags/33")
                 .then()
                 .assertThat()
                 .statusCode(204);
@@ -94,7 +94,7 @@ public class TagControllerTest {
     public void deleteTestNegative() {
         given().header("Authorization", "Bearer " + token)
                 .when()
-                .delete("http://localhost:8080/tags/333333")
+                .delete("http://localhost:7777/tags/333333")
                 .then()
                 .assertThat()
                 .statusCode(404);
