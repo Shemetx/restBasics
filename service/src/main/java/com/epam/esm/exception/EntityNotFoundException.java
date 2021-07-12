@@ -5,7 +5,7 @@ package com.epam.esm.exception;
  */
 public class EntityNotFoundException extends RuntimeException {
 
-    private String message;
+    private final String MESSAGE;
 
     /**
      * Constructor
@@ -14,12 +14,12 @@ public class EntityNotFoundException extends RuntimeException {
      */
     public EntityNotFoundException(String message) {
 
-        this.message = message;
+        this.MESSAGE = message;
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return MESSAGE;
     }
 
 }

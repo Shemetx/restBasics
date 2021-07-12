@@ -36,8 +36,7 @@ public class GiftCertificateCustomDaoImpl implements GiftCertificateCustomDao {
             nativeQuery.setParameter(i + 1, tags.get(i).getId());
         }
         List<GiftCertificate> resultList = nativeQuery.getResultList();
-        Page<GiftCertificate> page = new PageImpl<>(resultList);
-        return page;
+        return new PageImpl<>(resultList);
     }
 
     private StringBuilder getDynamicFindByTags(List<Tag> tags) {

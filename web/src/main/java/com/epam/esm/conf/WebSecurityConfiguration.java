@@ -1,9 +1,9 @@
 package com.epam.esm.conf;
 
+import com.epam.esm.jwt.JwtTokenProvider;
 import com.epam.esm.security.AuthEntryPointHandler;
 import com.epam.esm.security.CustomAccessDeniedHandler;
 import com.epam.esm.security.JwtConfigurer;
-import com.epam.esm.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +23,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final static String MAIN_CERTIFICATES = "/certificates";
-    private final static String AUTH_ENDPOINT = "/auth/**";
+    private static final String MAIN_CERTIFICATES = "/certificates";
+    private static final String AUTH_ENDPOINT = "/auth/**";
     private AuthEntryPointHandler authEntryPointHandler;
     private JwtTokenProvider jwtTokenProvider;
 

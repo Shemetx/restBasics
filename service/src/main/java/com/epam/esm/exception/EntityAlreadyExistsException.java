@@ -5,7 +5,7 @@ package com.epam.esm.exception;
  */
 public class EntityAlreadyExistsException extends RuntimeException {
 
-    private String message;
+    private final String MESSAGE;
 
     /**
      * Constructor
@@ -14,11 +14,11 @@ public class EntityAlreadyExistsException extends RuntimeException {
      */
     public EntityAlreadyExistsException(String message) {
 
-        this.message = message;
+        this.MESSAGE = message;
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return MESSAGE;
     }
 }

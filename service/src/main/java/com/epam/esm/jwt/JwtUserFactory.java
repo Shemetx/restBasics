@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 public final class JwtUserFactory {
 
     /**
-     * Instantiates a new Jwt user factory.
+     * Private constructor for utility class
      */
-    public JwtUserFactory() {
+    private JwtUserFactory() {
     }
 
     /**

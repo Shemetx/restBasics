@@ -5,7 +5,7 @@ package com.epam.esm.exception;
  */
 public class JwtAuthenticationException extends RuntimeException {
 
-    private String message;
+    private final String MESSAGE;
 
     /**
      * Instantiates a new Jwt authentication exception.
@@ -13,11 +13,11 @@ public class JwtAuthenticationException extends RuntimeException {
      * @param msg the msg
      */
     public JwtAuthenticationException(String msg) {
-        this.message = msg;
+        this.MESSAGE = msg;
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return MESSAGE;
     }
 }

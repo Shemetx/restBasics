@@ -9,6 +9,12 @@ import org.springframework.data.jpa.domain.Specification;
 public class SpecificationBuilder {
 
     /**
+     * Private constructor for utility class
+     */
+    private SpecificationBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
+    /**
      * Build specification.
      *
      * @param name        the name

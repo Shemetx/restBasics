@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 
 public class OrderServiceImplTest {
 
-    final int page = 0;
-    final int size = 7;
-    final int id = 1;
+    public static final int page = 0;
+    public static final int size = 7;
+    public static final int id = 1;
     @InjectMocks
     private OrderServiceImpl orderService;
     @Mock
@@ -46,17 +46,14 @@ public class OrderServiceImplTest {
     @Test
     public void findByIdNegative() {
         when(orderDao.findById(id)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> {
-            orderService.findById(id);
-        });
+        assertThrows(EntityNotFoundException.class, () -> orderService.findById(id));
     }
 
     @Test
     public void findByUserIdPositive() {
         Order order = new Order();
-        List<Order> orderList = new ArrayList<Order>() {{
-            add(order);
-        }};
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(order);
         Page<Order> pageOrders = new PageImpl<>(orderList);
         when(orderDao.findByCustomerId(id, PageRequest.of(page,size))).thenReturn(pageOrders);
         Page<Order> byUserId = orderService.findByUserId(id, page, size);
@@ -66,8 +63,6 @@ public class OrderServiceImplTest {
     @Test
     public void findByUserIdNegative() {
         when(orderDao.findByCustomerId(id, PageRequest.of(page,size))).thenReturn(Page.empty());
-        assertThrows(EntityNotFoundException.class, () -> {
-            orderService.findByUserId(id, page, size);
-        });
+        assertThrows(EntityNotFoundException.class, () -> orderService.findByUserId(id, page, size));
     }
 }

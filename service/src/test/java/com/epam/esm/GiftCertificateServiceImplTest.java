@@ -31,8 +31,8 @@ import static org.mockito.Mockito.when;
 
 public class GiftCertificateServiceImplTest {
 
-    final int page = 0;
-    final int size = 7;
+    public static final int page = 0;
+    public static final int size = 7;
     private final GiftCertificate testEntity = new GiftCertificate(1, "Test", "Test description", 3.6f,
             30, LocalDateTime.parse("2020-01-01T12:12:12"), LocalDateTime.parse("2020-03-03T14:14:14"));
     private final Specification<GiftCertificate> specificationName = SpecificationBuilder.build("est", null);
@@ -53,9 +53,8 @@ public class GiftCertificateServiceImplTest {
 
     @Test
     public void findByPartOfNamePositive() {
-        List<GiftCertificate> testList = new ArrayList<GiftCertificate>() {{
-            add(testEntity);
-        }};
+        List<GiftCertificate> testList = new ArrayList<>();
+        testList.add(testEntity);
         Page<GiftCertificate> pageGifts = new PageImpl<>(testList);
         when(dao.findAll(specificationName, PageRequest.of(page, size))).thenReturn(pageGifts);
         Page<GiftCertificate> list = service.findAll(specificationName, page, size);
@@ -71,9 +70,8 @@ public class GiftCertificateServiceImplTest {
 
     @Test
     public void findByPartOfDescriptionPositive() {
-        List<GiftCertificate> testList = new ArrayList<GiftCertificate>() {{
-            add(testEntity);
-        }};
+        List<GiftCertificate> testList = new ArrayList<>();
+        testList.add(testEntity);
         Page<GiftCertificate> pageGifts = new PageImpl<>(testList);
         when(dao.findAll(specificationDescription, PageRequest.of(page, size))).thenReturn(pageGifts);
         Page<GiftCertificate> list = service.findAll(specificationDescription, page, size);
@@ -105,16 +103,14 @@ public class GiftCertificateServiceImplTest {
     @Test
     public void findAllByTagPositive() {
         Tag tagTest = new Tag(1, "Test");
-        List<String> tagNames = new ArrayList<String>() {{
-            add("Test");
-        }};
+        List<String> tagNames = new ArrayList<>();
+        tagNames.add("Test");
 
-        List<Tag> tagList = new ArrayList<Tag>() {{
-            add(tagTest);
-        }};
-        List<GiftCertificate> testList = new ArrayList<GiftCertificate>() {{
-            add(testEntity);
-        }};
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(tagTest);
+        List<GiftCertificate> testList = new ArrayList<>();
+        testList.add(testEntity);
+
         Page<GiftCertificate> pageGifts = new PageImpl<>(testList);
         when(tagServiceImpl.findByName(tagTest.getName())).thenReturn(tagTest);
         when(dao.findBySeveralTags(tagList, PageRequest.of(page, size))).thenReturn(pageGifts);
@@ -125,13 +121,11 @@ public class GiftCertificateServiceImplTest {
     @Test
     public void findAllByTagNegative() {
         Tag tagTest = new Tag(1, "Test");
-        List<String> tagNames = new ArrayList<String>() {{
-            add("Test");
-        }};
+        List<String> tagNames = new ArrayList<>();
+        tagNames.add("Test");
 
-        List<Tag> tagList = new ArrayList<Tag>() {{
-            add(tagTest);
-        }};
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(tagTest);
         when(tagServiceImpl.findByName(tagTest.getName())).thenReturn(tagTest);
         when(dao.findBySeveralTags(tagList, PageRequest.of(page, size))).thenReturn(Page.empty());
         assertThrows(EntityNotFoundException.class, () ->
@@ -144,10 +138,9 @@ public class GiftCertificateServiceImplTest {
         GiftCertificate certificate = new GiftCertificate();
         certificate.setCreateDate(LocalDateTime.parse("2020-02-03T10:10:10"));
 
-        List<GiftCertificate> expected = new ArrayList<GiftCertificate>() {{
-            add(certificate);
-            add(testEntity);
-        }};
+        List<GiftCertificate> expected = new ArrayList<>();
+        expected.add(certificate);
+        expected.add(testEntity);
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("createDate").ascending()))).thenReturn(pageGifts);
         Page<GiftCertificate> ascendingDate = service.getSortedList(specificationEmpty, "asc", "date", page, size);
@@ -159,10 +152,9 @@ public class GiftCertificateServiceImplTest {
         GiftCertificate certificate = new GiftCertificate();
         certificate.setCreateDate(LocalDateTime.parse("2020-02-03T10:10:10"));
 
-        List<GiftCertificate> expected = new ArrayList<GiftCertificate>() {{
-            add(certificate);
-            add(testEntity);
-        }};
+        List<GiftCertificate> expected = new ArrayList<>();
+        expected.add(certificate);
+        expected.add(testEntity);
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("createDate").descending()))).thenReturn(pageGifts);
 
@@ -175,10 +167,9 @@ public class GiftCertificateServiceImplTest {
         GiftCertificate certificate = new GiftCertificate();
         certificate.setName("Zurado");
 
-        List<GiftCertificate> expected = new ArrayList<GiftCertificate>() {{
-            add(testEntity);
-            add(certificate);
-        }};
+        List<GiftCertificate> expected = new ArrayList<>();
+        expected.add(testEntity);
+        expected.add(certificate);
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("name").ascending()))).thenReturn(pageGifts);
 
@@ -191,10 +182,9 @@ public class GiftCertificateServiceImplTest {
         GiftCertificate certificate = new GiftCertificate();
         certificate.setName("Zurado");
 
-        List<GiftCertificate> expected = new ArrayList<GiftCertificate>() {{
-            add(certificate);
-            add(testEntity);
-        }};
+        List<GiftCertificate> expected = new ArrayList<>();
+        expected.add(certificate);
+        expected.add(testEntity);
         Page<GiftCertificate> pageGifts = new PageImpl<>(expected);
         when(dao.findAll(specificationEmpty,PageRequest.of(page, size, Sort.by("name").descending()))).thenReturn(pageGifts);
 

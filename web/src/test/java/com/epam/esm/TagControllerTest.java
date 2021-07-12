@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -26,13 +25,11 @@ import static org.hamcrest.Matchers.empty;
 @ActiveProfiles("dev")
 public class TagControllerTest {
 
-    private static final String tagCreateTest = "{" +
+    private static final String TAG_CREATE_TEST = "{" +
             "    \"name\": \"tagCreateTest\"\n" +
             "}";
     private final Role role = new Role("ROLE_ADMIN");
-    private final Set<Role> roles = new HashSet<Role>() {{
-        add(role);
-    }};
+    private final Set<Role> roles = new HashSet<>();
     private JwtTokenProvider jwtTokenProvider;
     private String token;
 
@@ -43,6 +40,7 @@ public class TagControllerTest {
 
     @Before
     public void init() {
+        roles.add(role);
         token = jwtTokenProvider.createToken("admin", roles);
     }
 
@@ -72,7 +70,7 @@ public class TagControllerTest {
     public void createTest() {
         given().header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
-                .body(tagCreateTest)
+                .body(TAG_CREATE_TEST)
                 .post("http://localhost:7777/tags")
                 .then()
                 .assertThat()

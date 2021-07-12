@@ -137,9 +137,7 @@ public class JwtTokenProvider {
 
     private Set<String> getRoleNames(Set<Role> roles) {
         Set<String> result = new HashSet<>();
-        roles.forEach(role -> {
-            result.add(role.getName());
-        });
+        roles.forEach(role -> result.add(role.getName()));
         return result;
     }
 }

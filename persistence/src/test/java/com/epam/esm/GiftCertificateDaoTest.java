@@ -27,6 +27,7 @@ public class GiftCertificateDaoTest {
     private GiftCertificateDao dao;
     private int page = 0;
     private int size = 7;
+    private final String CREATE_TIME = "2020-07-07T15:15:15";
 
     @Autowired
     public void setDao(GiftCertificateDao dao) {
@@ -43,10 +44,9 @@ public class GiftCertificateDaoTest {
     public void findByTagIdTest() {
         Tag first = new Tag(2, "testTagSecond");
         Tag second = new Tag(3, "testTagThird");
-        List<Tag> tags = new ArrayList<Tag>() {{
-            add(first);
-            add(second);
-        }};
+        List<Tag> tags = new ArrayList<>();
+        tags.add(first);
+        tags.add(second);
         Page<GiftCertificate> byTagId = dao.findBySeveralTags(tags, PageRequest.of(page,size));
         assertEquals(2, byTagId.getContent().get(0).getId());
     }
@@ -60,8 +60,8 @@ public class GiftCertificateDaoTest {
         certificate.setDescription("saveTestDescription");
         certificate.setPrice(23.6f);
         certificate.setDuration(10);
-        certificate.setCreateDate(LocalDateTime.parse("2020-07-07T15:15:15"));
-        certificate.setLastUpdateDate(LocalDateTime.parse("2020-07-07T15:15:15"));
+        certificate.setCreateDate(LocalDateTime.parse(CREATE_TIME));
+        certificate.setLastUpdateDate(LocalDateTime.parse(CREATE_TIME));
         GiftCertificate save = dao.save(certificate);
         dao.delete(save);
         assertEquals(certificate.getName(), save.getName());
@@ -85,8 +85,8 @@ public class GiftCertificateDaoTest {
         certificate.setDescription("saveTestDescription");
         certificate.setPrice(23.6f);
         certificate.setDuration(10);
-        certificate.setCreateDate(LocalDateTime.parse("2020-07-07T15:15:15"));
-        certificate.setLastUpdateDate(LocalDateTime.parse("2020-07-07T15:15:15"));
+        certificate.setCreateDate(LocalDateTime.parse(CREATE_TIME));
+        certificate.setLastUpdateDate(LocalDateTime.parse(CREATE_TIME));
 
         GiftCertificate save = dao.save(certificate);
         Page<GiftCertificate> beforeDelete = dao.findAll(PageRequest.of(page,size));
